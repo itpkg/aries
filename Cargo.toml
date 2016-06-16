@@ -1,0 +1,27 @@
+[package]
+name = "cheetah"
+version = "0.1.0"
+authors = ["Jitang Zheng <jitang.zheng@gmail.com>"]
+description = "a web framwork for rust-lang."
+documentation = "https://github.com/itpkg/cheetah/src/doc"
+homepage = "https://github.com/itpkg/cheetah"
+repository = "https://github.com/itpkg/cheetah.git"
+readme = "README.md"
+keywords = ["web", "frameword", "orm", "cheetah"]
+license = "MIT"
+
+[dependencies]
+rand = "0.3"
+uuid = "0.2"
+time = "0.1"
+regex = "0.1"
+getopts = "0.2"
+
+hyper = "0.9"
+rust-crypto = "0.2"
+r2d2 = "0.7"
+
+postgres = "0.11"
+mysql = "5.0"
+redis = "0.5"
+memcached-rs = "0.1"
