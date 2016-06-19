@@ -8,6 +8,7 @@ A web framework for rust language.
 
 ```
 pacman -S rust cargo
+cargo test -- --nocapture
 ```
 
 ### Plugins(for atom)
