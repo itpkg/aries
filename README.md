@@ -29,6 +29,12 @@ cargo build --release
 strip target/release/aries
 ```
 
+## Notes
+* Format rust code file
+```
+cargo fmt -- --write-mode=replace
+```
+
 ## Thinks
 
 - <https://doc.rust-lang.org/stable/book/>
