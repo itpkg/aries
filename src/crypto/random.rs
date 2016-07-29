@@ -1,8 +1,12 @@
 extern crate rand;
+extern crate uuid;
 
 use std::iter::repeat;
-
 use self::rand::Rng;
+
+pub fn gen_uuid_v4() -> String{
+    return uuid::Uuid::new_v4().to_string();
+}
 
 pub fn gen_string(n :usize) -> String{
     return rand::thread_rng()

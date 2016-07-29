@@ -16,3 +16,10 @@ fn test_crypto_random_bytes(){
     let b = random::gen_bytes(32);
     println!("random bytes: {}", b.to_base64(base64::STANDARD));
 }
+
+
+#[test]
+fn test_crypto_random_uuid(){
+    let s = random::gen_uuid_v4();
+    println!("uuid v4: {}", s);
+}
