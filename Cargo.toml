@@ -17,6 +17,7 @@ time = "0.1"
 regex = "0.1"
 getopts = "0.2"
 rustc-serialize = "0.3"
+jwt = "0.4"
 
 hyper = "0.9"
 rust-crypto = "0.2"
@@ -24,5 +25,7 @@ r2d2 = "0.7"
 
 postgres = "0.11"
 mysql = "5.0"
+rusqlite = "0.7"
+
 redis = "0.5"
 memcached-rs = "0.1"
