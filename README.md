@@ -8,6 +8,8 @@ A web framework for rust language.
 
 ```
 pacman -S rust cargo
+git clone https://github.com/itpkg/aries.git
+cd aries
 cargo test -- --nocapture
 ```
 
@@ -29,4 +31,6 @@ strip target/release/aries
 
 ## Thinks
 
+- <https://doc.rust-lang.org/stable/book/>
+- <http://zsiciarz.github.io/24daysofrust/>
 - <https://github.com/hyperium/hyper>

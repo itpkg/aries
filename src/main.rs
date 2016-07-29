@@ -24,8 +24,8 @@ fn main() {
     opts.optopt("o", "", "set output file name", "NAME");
     opts.optflag("h", "help", "print this help menu");
     let matches = match opts.parse(&args[1..]) {
-        Ok(m) => { m }
-        Err(f) => { panic!(f.to_string()) }
+        Ok(m) => m,
+        Err(f) => panic!(f.to_string()),
     };
     if matches.opt_present("h") {
         print_usage(&program, opts);
