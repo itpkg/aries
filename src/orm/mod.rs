@@ -1,2 +1,3 @@
-mod mysql;
-mod postgresql;
+pub mod mysql;
+pub mod postgresql;
+pub mod sqlite;
