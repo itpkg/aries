@@ -2,12 +2,16 @@ extern crate time;
 
 use std::collections::HashMap;
 use std::collections::btree_map::BTreeMap;
-use super::Error;
+use super::{Error, Result};
 use self::time::Tm;
 
 // pub mod mysql;
 pub mod postgresql;
 // pub mod sqlite;
+
+pub trait Db{
+
+}
 
 pub enum Type {
     Varchar(&'static str),
@@ -36,7 +40,7 @@ pub trait Dao<T: Model> {
     fn execute(&self,
                name: &'static str,
                params: BTreeMap<&'static str, Type>)
-               -> Result<u64, Error>;
+               -> Result<u64>;
 
     // fn find(&self, query: &str, item: T) -> Result<Vec<T>, Error>;
     // fn delete(&self, query: &str, item: T) -> Result<i64, Error>;
