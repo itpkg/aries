@@ -1,13 +1,10 @@
-#ifndef AIRES_APP_H
-#define AIRES_APP_H
+#include "app.h"
 
-namespace aries{
-  class App{
-  public:
-    void start(int port);
-    void worker(int num);
-  private:
-  };
+
+using namespace aries;
+
+
+void App::start(int argc, char** argv){
+
+
 }
-
-#endif

@@ -4,11 +4,16 @@ A web framework for C++ language.
 
 ## Build
 ```
+git clone https://github.com/itpkg/aries.git
+cd aries
+
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
 make
-./aries
+make install
+
+./demo
 ```
 
 ## Editor
@@ -19,6 +24,8 @@ make
 
 - <https://google.github.io/styleguide/cppguide.html>
 - <https://github.com/google/fruit>
+- <https://github.com/gflags/gflags>
+
 - <https://github.com/google/re2>
 - <https://github.com/google/flatbuffers>
 - <https://github.com/google/glog>
@@ -26,4 +33,3 @@ make
 - <https://github.com/dropbox/json11>
 - <https://github.com/facebook/proxygen>
 - <https://github.com/facebook/folly>
-- <https://github.com/gflags/gflags>
