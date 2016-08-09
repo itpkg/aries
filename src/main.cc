@@ -1,36 +1,109 @@
-#include <docopt.h>
+#include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
+
+
+#include <boost/log/trivial.hpp>
+#include <boost/log/utility/setup/file.hpp>
 
 #include <iostream>
+#include <string>
+#include <cstdlib>
 
-static const char USAGE[] =
-R"(A c++ web framwork.
+namespace logging = boost::log;
 
-    Usage:
-      aries ship new <name>...
-      aries ship <name> move <x> <y> [--speed=<kn>]
-      aries ship shoot <x> <y>
-      aries mine (set|remove) <x> <y> [--moored | --drifting]
-      aries (-h | --help)
-      aries (-v | --version)
+void init(){
+  #ifdef NDEBUG
 
-    Options:
-      -h --help     Show this screen.
-      -v --version  Show version.
-      --speed=<kn>  Speed in knots [default: 10].
-      --moored      Moored (anchored) mine.
-      --drifting    Drifting mine.
-)";
+    logging::core::get()->set_filter
+    (
+        logging::trivial::severity >= logging::trivial::info
+    );
+
+  #else
+
+  #endif
+}
+
+
 
 int main(int argc, char** argv){
-  std::map<std::string, docopt::value> args
-        = docopt::docopt(USAGE,
-                         { argv + 1, argv + argc },
-                         true,
-                         "2016.08.09");
+  init();
 
-    for(auto const& arg : args) {
-        std::cout << arg.first <<  arg.second << std::endl;
+  try
+    {
+      std::string appName = boost::filesystem::basename(argv[0]);
+      uint jobs = 0;
+      bool server = false;
+      bool daemon = false;
+      std::string config = "config.toml";
+
+
+      namespace po = boost::program_options;
+      po::options_description desc("Options");
+      desc.add_options()
+        ("init,i", "init config file.")
+        ("config,c", po::value<std::string>(&config), "load config from file, default: \"config.toml\".")
+        ("server,s", "start web server.")
+        ("jobs,j", po::value<uint>(&jobs), "allow N worker jobs at once, default: \"0\".")
+        ("daemon,d", "daemon mode.")
+        ("help,h", "print help messages.")
+        ("version,v", "print application version.");
+
+      po::variables_map vm;
+      try
+      {
+        po::store(po::parse_command_line(argc, argv, desc),
+                  vm);
+
+        if ( vm.count("help")  )
+        {
+          std::cout << appName << " is a web framework for c++." << std::endl
+                    << desc << std::endl;
+          return EXIT_SUCCESS;
+        }
+
+        if ( vm.count("version")  )
+        {
+          std::cout << "2016.08.09" << std::endl;
+          return EXIT_SUCCESS;
+        }
+
+        if ( vm.count("init")  )
+        {
+          //TODO generate config file
+          BOOST_LOG_TRIVIAL(info) << "generate file " << config << ".";
+          return EXIT_SUCCESS;
+        }
+
+        if ( vm.count("daemon")  )
+        {
+          daemon = true;
+        }
+
+        if ( vm.count("server")  )
+        {
+          server = true;
+        }
+
+        po::notify(vm);
+      }
+      catch(po::error& e)
+      {
+        std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
+        std::cerr << desc << std::endl;
+        return EXIT_FAILURE;
+      }
+
+      // application code here //
+
+    }
+    catch(std::exception& e)
+    {
+      std::cerr << "Unhandled exception reached the top of main: "
+                << e.what() << ", application will now exit" << std::endl;
+      return EXIT_FAILURE;
+
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

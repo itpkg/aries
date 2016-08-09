@@ -25,6 +25,7 @@ make install
 ## Editor
 ### Atom
 * language-cmake
+* linter-c++
 * autocomplete-clang
 * git-plus
 
