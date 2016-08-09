@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 2.8)
 project (aries CXX)
 
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
+ADD_DEFINITIONS(-DBOOST_LOG_USE_NATIVE_SYSLOG)
 
 aux_source_directory(src ARIES_SRCS)
 

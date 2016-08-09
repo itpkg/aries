@@ -1,38 +1,16 @@
+#include "log.h"
+
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-#include <boost/log/trivial.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <boost/log/attributes/timer.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-
 #include <iostream>
-#include <string>
 #include <cstdlib>
 
-namespace logging = boost::log;
 
-void init(){
+void init(std::string appName){
   #ifdef NDEBUG
-
-    logging::core::get()->set_filter
-    (
-        logging::trivial::severity >= logging::trivial::info
-    );
-
-
-
-    logging::add_file_log(
-            logging::keywords::file_name = "out.log",
-            logging::keywords::auto_flush = true,
-            logging::keywords::open_mode = (std::ios::out | std::ios::app),
-            //logging::keywords::format = "%TimeStamp% [%Uptime%] (%LineID%) <%Severity%>: %Message%"
-            logging::keywords::format = "%TimeStamp%: %Message%"
-            );
-    logging::add_common_attributes();
-    //logging::expressions::attr< logging::trivial::severity_level >("Severity");
-    //logging::core::get()->add_global_attribute("Uptime", logging::attributes::timer());
-
+    aries::log::init_native_syslog();
+    //aries::log::init_file(appName);
   #else
 
   #endif
@@ -41,11 +19,12 @@ void init(){
 
 
 int main(int argc, char** argv){
-  init();
 
   try
     {
       std::string appName = boost::filesystem::basename(argv[0]);
+      init(appName);
+
       uint jobs = 0;
       bool server = false;
       bool daemon = false;
