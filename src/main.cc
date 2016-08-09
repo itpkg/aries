@@ -1,5 +1,5 @@
 int main(int argc, char** argv){
-  return 
+  return 0;
 }
 // #include "../src/app.h"
 //

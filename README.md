@@ -9,7 +9,11 @@ cd aries
 
 mkdir build
 cd build
+
+cmake -DCMAKE_BUILD_TYPE=Release ..
+# OR
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
+
 make
 make install
 
@@ -18,7 +22,9 @@ make install
 
 ## Editor
 ### Atom
-* nuclide
+* language-cmake
+* autocomplete-clang
+* git-plus
 
 ## Thanks
 
