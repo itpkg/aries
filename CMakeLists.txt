@@ -15,4 +15,7 @@ target_link_libraries(aries
   boost_filesystem
   boost_system
   boost_log
+  boost_thread
+  boost_log_setup
+  boost_date_time
 )

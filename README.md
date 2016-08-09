@@ -14,7 +14,7 @@ cd build
 # gcc
 cmake -DCMAKE_BUILD_TYPE=Release ..
 # clang
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ ..
 
 make
 make install

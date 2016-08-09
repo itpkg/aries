@@ -1,9 +1,10 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-
 #include <boost/log/trivial.hpp>
 #include <boost/log/utility/setup/file.hpp>
+#include <boost/log/attributes/timer.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
 
 #include <iostream>
 #include <string>
@@ -18,6 +19,19 @@ void init(){
     (
         logging::trivial::severity >= logging::trivial::info
     );
+
+
+
+    logging::add_file_log(
+            logging::keywords::file_name = "out.log",
+            logging::keywords::auto_flush = true,
+            logging::keywords::open_mode = (std::ios::out | std::ios::app),
+            //logging::keywords::format = "%TimeStamp% [%Uptime%] (%LineID%) <%Severity%>: %Message%"
+            logging::keywords::format = "%TimeStamp%: %Message%"
+            );
+    logging::add_common_attributes();
+    //logging::expressions::attr< logging::trivial::severity_level >("Severity");
+    //logging::core::get()->add_global_attribute("Uptime", logging::attributes::timer());
 
   #else
 
