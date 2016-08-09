@@ -12,6 +12,8 @@ add_executable(aries ${ARIES_SRCS})
 target_compile_features(aries PRIVATE cxx_range_for)
 target_link_libraries(aries
   pthread
+  jemalloc
+  
   boost_program_options
   boost_filesystem
   boost_system
