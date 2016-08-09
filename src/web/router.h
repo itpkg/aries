@@ -5,11 +5,11 @@ namespace aries{
   namespace web{
     class Router{
     public:
-      void GET();
-      void POST();
-      void PUT();
-      void PATCH();
-      void DELETE();
+      void get();
+      void post();
+      void put();
+      void patch();
+      void _delete();
     };
   }
 }

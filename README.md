@@ -1,8 +1,11 @@
-# aries
+# Aries
 
 A web framework for C++ language.
 
 ## Build
+
+- Need install [fruit](https://github.com/google/fruit.git) first.
+
 ```
 git clone https://github.com/itpkg/aries.git
 cd aries
@@ -22,18 +25,20 @@ make install
 ```
 
 ## Editor
+
 ### Atom
-* language-cmake
-* linter-c++
-* autocomplete-clang
-* git-plus
+
+- language-cmake
+- linter-c++
+- autocomplete-clang
+- git-plus
 
 ## Thanks
 
 - <https://google.github.io/styleguide/cppguide.html>
 - <https://github.com/google/fruit>
-- <https://github.com/gflags/gflags>
 
+- <https://github.com/gflags/gflags>
 - <https://github.com/google/re2>
 - <https://github.com/google/flatbuffers>
 - <https://github.com/google/glog>

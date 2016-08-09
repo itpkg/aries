@@ -1,19 +1,20 @@
 cmake_minimum_required (VERSION 2.8)
 project (aries CXX)
 
+link_directories(/usr/local/lib)
+
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
 ADD_DEFINITIONS(-DBOOST_LOG_USE_NATIVE_SYSLOG)
 
 aux_source_directory(src ARIES_SRCS)
 
-find_package(gflags REQUIRED)
-
 add_executable(aries ${ARIES_SRCS})
 target_compile_features(aries PRIVATE cxx_range_for)
+
 target_link_libraries(aries
   pthread
   jemalloc
-  
+
   boost_program_options
   boost_filesystem
   boost_system
@@ -21,4 +22,6 @@ target_link_libraries(aries
   boost_thread
   boost_log_setup
   boost_date_time
+
+  fruit
 )

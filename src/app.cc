@@ -1,10 +1,12 @@
 #include "app.h"
 
+namespace aries{
+  void App::start(){
+    //TODO
+  }
 
-using namespace aries;
-
-
-void App::start(int argc, char** argv){
-
-
+  fruit::Component<App> getApp(std::string file) {
+    //TODO
+    return fruit::createComponent();
+  }
 }

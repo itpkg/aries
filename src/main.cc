@@ -1,7 +1,8 @@
-#include "log.h"
+#include "app.h"
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+
 
 #include <iostream>
 #include <cstdlib>
@@ -25,9 +26,6 @@ int main(int argc, char** argv){
       std::string appName = boost::filesystem::basename(argv[0]);
       init(appName);
 
-      uint jobs = 0;
-      bool server = false;
-      bool daemon = false;
       std::string config = "config.toml";
 
 
@@ -35,10 +33,10 @@ int main(int argc, char** argv){
       po::options_description desc("Options");
       desc.add_options()
         ("init,i", "init config file.")
-        ("config,c", po::value<std::string>(&config), "load config from file, default: \"config.toml\".")
-        ("server,s", "start web server.")
-        ("jobs,j", po::value<uint>(&jobs), "allow N worker jobs at once, default: \"0\".")
-        ("daemon,d", "daemon mode.")
+        ("config,c", po::value<std::string>(&config), "load config from file, default: \"config.yaml\".")
+        // ("server,s", "start web server.")
+        // ("jobs,j", po::value<uint>(&jobs), "allow N worker jobs at once, default: \"0\".")
+        // ("daemon,d", "daemon mode.")
         ("help,h", "print help messages.")
         ("version,v", "print application version.");
 
@@ -68,15 +66,6 @@ int main(int argc, char** argv){
           return EXIT_SUCCESS;
         }
 
-        if ( vm.count("daemon")  )
-        {
-          daemon = true;
-        }
-
-        if ( vm.count("server")  )
-        {
-          server = true;
-        }
 
         po::notify(vm);
       }
@@ -88,7 +77,9 @@ int main(int argc, char** argv){
       }
 
       // application code here //
-
+      fruit::Injector<aries::App> injector(aries::getApp(config));
+      aries::App* app = injector.get<aries::App*>();
+      app->start();
     }
     catch(std::exception& e)
     {
