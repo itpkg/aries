@@ -1,32 +1,36 @@
+#include <docopt.h>
+
+#include <iostream>
+
+static const char USAGE[] =
+R"(A c++ web framwork.
+
+    Usage:
+      aries ship new <name>...
+      aries ship <name> move <x> <y> [--speed=<kn>]
+      aries ship shoot <x> <y>
+      aries mine (set|remove) <x> <y> [--moored | --drifting]
+      aries (-h | --help)
+      aries (-v | --version)
+
+    Options:
+      -h --help     Show this screen.
+      -v --version  Show version.
+      --speed=<kn>  Speed in knots [default: 10].
+      --moored      Moored (anchored) mine.
+      --drifting    Drifting mine.
+)";
+
 int main(int argc, char** argv){
-  return 0;
+  std::map<std::string, docopt::value> args
+        = docopt::docopt(USAGE,
+                         { argv + 1, argv + argc },
+                         true,
+                         "2016.08.09");
+
+    for(auto const& arg : args) {
+        std::cout << arg.first <<  arg.second << std::endl;
+    }
+
+    return 0;
 }
-// #include "../src/app.h"
-//
-// #include <iostream>
-// #include <gflags/gflags.h>
-//
-// DEFINE_bool(big_menu, true, "Include 'advanced' options in the menu listing");
-// DEFINE_string(languages, "english,french,german",
-//                  "comma-separated list of languages to offer in the 'lang' menu");
-//
-// int main(int argc, char** argv){
-//     gflags::SetVersionString("2016.08.01");
-//     gflags::SetUsageMessage("Usage : ./demo ");
-//     google::ParseCommandLineFlags(&argc, &argv, true);
-//
-//     std::cout << "argc=" << argc << std::endl;
-//     if (FLAGS_big_menu) {
-//       std::cout << "big menu is ture" << std::endl;
-//     } else {
-//       std::cout << "big menu is flase" << std::endl;
-//     }
-//
-//     std::cout << "languages=" << FLAGS_languages << std::endl;
-//
-//      gflags::ShutDownCommandLineFlags();
-//
-//   // aries::App app;
-//   // app.start(argc, argv);
-//   return 0;
-// }

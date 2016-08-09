@@ -6,12 +6,14 @@ A web framework for C++ language.
 ```
 git clone https://github.com/itpkg/aries.git
 cd aries
+git clone https://github.com/docopt/docopt.cpp.git vendor/docopt
 
 mkdir build
 cd build
 
+# gcc
 cmake -DCMAKE_BUILD_TYPE=Release ..
-# OR
+# clang
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
 
 make
