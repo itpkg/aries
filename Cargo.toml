@@ -24,8 +24,7 @@ rust-crypto = "0.2"
 r2d2 = "0.7"
 
 postgres = "0.11"
-mysql = "5.0"
-rusqlite = "0.7"
+mysql = "6.0"
 
 redis = "0.5"
 memcached-rs = "0.1"

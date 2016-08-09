@@ -16,12 +16,18 @@ cargo test -- --nocapture
 ### Plugins(for atom)
 
 ```
-apm install atom-beautify
-apm install language-rust
-apm install linter-rust
 cargo install rustfmt
+cargo install racer
 echo "export PATH=\$HOME/.cargo/bin:\$PATH" >> ~/.zshrc
 ```
+
+remember to enable autosave
+
+* atom-beautify
+* git-plus
+* language-rust
+* racer
+
 
 ## Build
 
@@ -46,3 +52,4 @@ find . -type f -name "*.rs" -exec rustfmt --write-mode replace {} \;
 - <http://zsiciarz.github.io/24daysofrust/>
 - <https://github.com/hyperium/hyper>
 - <https://github.com/kud1ing/awesome-rust>
+- <https://kaisery.gitbooks.io/rust-book-chinese/content/>
