@@ -4,10 +4,6 @@ project (aries CXX)
 aux_source_directory(src LIB_SRCS)
 list (REMOVE_ITEM LIB_SRCS src/main.cpp)
 
-# link_directories(/usr/local/lib)
-# include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
-# link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib)
-
 #-------boost--------------------------
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
 ADD_DEFINITIONS(-DBOOST_LOG_USE_NATIVE_SYSLOG)
@@ -18,7 +14,7 @@ target_compile_features(aries PRIVATE cxx_range_for)
 
 #-------binary-------------------------
 
-add_executable(demo ${LIB_SRCS} src/main.cpp)
+add_executable(demo src/main.cpp)
 target_compile_features(demo PRIVATE cxx_range_for)
 
 target_link_libraries(demo
@@ -35,20 +31,10 @@ target_link_libraries(demo
   boost_date_time
 
   fruit
+  aries
 )
 set_target_properties(demo PROPERTIES OUTPUT_NAME aries)
-#--------------3rd library-------------
-# include(ExternalProject)
-#
-# ExternalProject_Add(fruit
-#   # DOWNLOAD_NAME fruit-2.0.4.tar.gz
-#   # URL https://github.com/google/fruit/archive/v2.0.4.tar.gz
-#   GIT_REPOSITORY https://github.com/google/fruit.git
-#   # INSTALL_DIR ${PROJECT_BINARY_DIR}
-#   # CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-# )
-# # ExternalProject_Get_Property(fruit install_dir)
-# add_dependencies(aries fruit)
+
 #--------install-----------------------
 
 install (TARGETS aries demo
@@ -62,13 +48,6 @@ install (DIRECTORY src/
  DESTINATION include/aries
  FILES_MATCHING PATTERN "*.h"
 )
-# install (DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/
-#   DESTINATION include
-# )
-# install (DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib/
-#   DESTINATION lib
-#   #FILE_PERMISSIONS "0755"
-# )
 
 #--------uninstall---------------------
 
