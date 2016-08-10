@@ -29,9 +29,12 @@ make install/strip
 ### Atom
 
 - language-cmake
-- linter-c++
+- language-cpp14
+- linter-clang
 - autocomplete-clang
 - git-plus
+- autosave(enable)
+- atom-beautify(beautify on save, clang-format)
 
 ## Thanks
 
