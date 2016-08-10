@@ -10,6 +10,7 @@ namespace aries{
       void PUT();
       void PATCH();
       void DELETE();
+      void REST();
     };
   }
 }

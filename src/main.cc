@@ -41,33 +41,34 @@ namespace aries{
 
         po::options_description nginx("Nginx options");
         nginx.add_options()
-          ("ssl", "enable ssl certs.")
+          ("nginx", "[TODO] generate nginx.config(http).")
+          ("nginx-ssl", "[TODO] generate nginx.config(https).")
         ;
 
         po::options_description server("Server options");
 
         server.add_options()
-          ("host,H", po::value<std::string>()->default_value("localhost"), "listening port.")
-          ("port,p", po::value<uint>()->default_value(8080), "listening port.")
-          ("jobs,j", po::value<uint>()->default_value(4), "allow N worker jobs at once.")
-          ("daemon,D", "daemon mode.")
+          ("host,H", po::value<std::string>()->default_value("localhost"), "[TODO] listening host.")
+          ("port,p", po::value<uint>()->default_value(8080), "[TODO] listening port.")
+          ("jobs,j", po::value<uint>()->default_value(4), "[TODO] allow N worker jobs at once.")
+          ("daemon,D", "[TODO] daemon mode.")
         ;
 
         po::options_description database("Database options");
         database.add_options()
-          ("db-create", "create new database.")
-          ("db-connect", "connect to database.")
-          ("db-migrate", "migrate database.")
-          ("db-seed", "insert seed data into database.")
-          ("db-rollback", "rollback database changes.")
-          ("db-drop", "drop database.")
+          ("db-create", "[TODO] create new database.")
+          ("db-connect", "[TODO] connect to database.")
+          ("db-migrate", "[TODO] migrate database.")
+          ("db-seed", "[TODO] insert seed data into database.")
+          ("db-rollback", "[TODO] rollback database changes.")
+          ("db-drop", "[TODO] drop database.")
         ;
 
-        po::options_description cache("cache options");
+        po::options_description cache("Cache options");
         cache.add_options()
-          ("cache-list", "list all items.")
-          ("cache-flush", "clear items.")
-          ("cache-connect", "connect cache.")
+          ("cache-list", "[TODO] list all items.")
+          ("cache-flush", "[TODO] clear items.")
+          ("cache-connect", "[TODO] connect cache.")
         ;
 
         po::options_description desc("Global options");

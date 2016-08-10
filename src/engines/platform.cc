@@ -6,6 +6,20 @@
 namespace aries{
     namespace platform{
 
+        std::vector<orm::Migration*> Engine::migrations(){
+          std::vector<orm::Migration*> items;
+          return items;
+        }
+        std::vector<std::string> Engine::seed(){
+          std::vector<std::string> items;
+          return items;
+        }
+        std::map<std::string, std::string> Engine::queries(){
+          std::map <std::string, std::string> items;
+          items["user.find_by_id"] = "SELECT * FROM USERS WHERE ID = $1";
+          return items;
+        }
+
         void Engine::mount(web::Router* rt){
 
         }

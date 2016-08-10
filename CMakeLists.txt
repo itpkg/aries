@@ -24,6 +24,8 @@ set(LIB_LINKS
   jemalloc
   yaml-cpp
 
+  hiredis
+
   boost_program_options
   boost_filesystem
   boost_system
