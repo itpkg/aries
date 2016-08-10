@@ -1,5 +1,4 @@
-#ifndef AIRES_ORM_CACHE_CACHE_H
-#define AIRES_ORM_CACHE_CACHE_H
+#pragma once
 
 #include <cstdlib>
 #include <vector>
@@ -13,5 +12,3 @@ public:
   virtual std::vector<const char *> keys() = 0;
 };
 }
-
-#endif

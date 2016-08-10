@@ -1,5 +1,4 @@
-#ifndef AIRES_MIGRATION_H
-#define AIRES_MIGRATION_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -12,5 +11,3 @@ public:
   virtual std::string name() = 0;
 };
 }
-
-#endif

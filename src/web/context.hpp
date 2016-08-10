@@ -1,5 +1,4 @@
-#ifndef AIRES_WEB_CONTEXT_H
-#define AIRES_WEB_CONTEXT_H
+#pragma once
 
 namespace aries {
 class Context {
@@ -12,5 +11,3 @@ public:
 private:
 };
 }
-
-#endif

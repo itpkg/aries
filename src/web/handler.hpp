@@ -1,5 +1,4 @@
-#ifndef AIRES_WEB_HANDLER_H
-#define AIRES_WEB_HANDLER_H
+#pragma once
 
 namespace aries {
 namespace web {
@@ -8,5 +7,3 @@ public:
 };
 }
 }
-
-#endif

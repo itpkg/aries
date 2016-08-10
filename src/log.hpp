@@ -1,5 +1,4 @@
-#ifndef AIRES_LOG_H
-#define AIRES_LOG_H
+#pragma once
 
 #include <boost/log/trivial.hpp>
 #include <string>
@@ -11,5 +10,3 @@ void use_native_syslog_backend();
 void use_file_backend(std::string appName);
 }
 }
-
-#endif

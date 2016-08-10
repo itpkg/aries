@@ -1,9 +1,7 @@
+#pragma once
 /**
 * https://www.postgresql.org/docs/9.5/static/libpq-connect.html#LIBPQ-PARAMKEYWORDS
 */
-
-#ifndef AIRES_IMPL_POSTGRESQL_H
-#define AIRES_IMPL_POSTGRESQL_H
 
 #include "../database.hpp"
 
@@ -26,5 +24,3 @@ private:
 };
 }
 }
-
-#endif

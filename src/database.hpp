@@ -1,5 +1,4 @@
-#ifndef AIRES_DB_H
-#define AIRES_DB_H
+#pragma once
 
 #include <iostream>
 #include <sstream>
@@ -13,5 +12,3 @@ public:
   query(const char *sql, std::initializer_list<const char *> params) = 0;
 };
 }
-
-#endif

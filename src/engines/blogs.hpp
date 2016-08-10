@@ -1,3 +1,1 @@
-#ifndef AIRES_ENGINES_BLOGS_H
-#define AIRES_ENGINES_BLOGS_H
-#endif
+#pragma once

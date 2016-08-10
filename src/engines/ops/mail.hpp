@@ -1,3 +1,1 @@
-#ifndef AIRES_ENGINES_OPS_MAIL_H
-#define AIRES_ENGINES_OPS_MAIL_H
-#endif
+#pragma once

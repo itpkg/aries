@@ -1,10 +1,10 @@
-#ifndef AIRES_ENGINES_PLATFORM_H
-#define AIRES_ENGINES_PLATFORM_H
+#pragma once
 
-#include "../web/engine.hpp"
+#include "../../web/engine.hpp"
 
 namespace aries {
 namespace platform {
+
 class Engine : public web::Engine {
 public:
   std::vector<Migration *> migrations();
@@ -16,4 +16,3 @@ public:
 };
 }
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef AIRES_WEB_ROUTER_H
-#define AIRES_WEB_ROUTER_H
+#pragma once
 
 namespace aries {
 namespace web {
@@ -15,5 +14,3 @@ public:
 };
 }
 }
-
-#endif

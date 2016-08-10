@@ -1,5 +1,4 @@
-#ifndef AIRES_ENGINES_BOOKS_H
-#define AIRES_ENGINES_BOOKS_H
+#pragma once
 
 #include "../web/engine.hpp"
 
@@ -16,4 +15,3 @@ public:
 };
 }
 }
-#endif

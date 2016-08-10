@@ -1,5 +1,4 @@
-#ifndef AIRES_APP_H
-#define AIRES_APP_H
+#pragma once
 
 #include "web/engine.hpp"
 
@@ -33,5 +32,3 @@ private:
   YAML::Node config;
 };
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef AIRES_WEB_ENGINE_H
-#define AIRES_WEB_ENGINE_H
+#pragma once
 
 #include "../log.hpp"
 #include "../migration.hpp"
@@ -26,5 +25,3 @@ private:
 };
 }
 }
-
-#endif

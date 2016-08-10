@@ -1,3 +1,1 @@
-#ifndef AIRES_ENGINES_OPS_SSH_H
-#define AIRES_ENGINES_OPS_SSH_H
-#endif
+#pragma once

@@ -1,10 +1,7 @@
-#ifndef AIRES_MAIN_H
-#define AIRES_MAIN_H
+#pragma once
 
 #include "app.hpp"
 
 namespace aries {
 int main(int argc, char **argv);
 }
-
-#endif

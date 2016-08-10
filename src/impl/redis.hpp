@@ -1,6 +1,4 @@
-
-#ifndef AIRES_IMPL_REDIS_H
-#define AIRES_IMPL_REDIS_H
+#pragma once
 
 #include "../cache.hpp"
 
@@ -23,5 +21,3 @@ private:
 };
 }
 }
-
-#endif
