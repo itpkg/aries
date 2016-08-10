@@ -56,8 +56,8 @@ namespace aries{
                (
                    expr::stream
                        << expr::format_date_time< boost::posix_time::ptime >("TimeStamp", "%Y-%m-%d %H:%M:%S")
-                       << ": <" << logging::trivial::severity
-                       << "> " << expr::smessage
+                       << " [" << logging::trivial::severity
+                       << "] " << expr::smessage
                )
               );
 

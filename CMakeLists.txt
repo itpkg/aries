@@ -7,23 +7,15 @@ file(GLOB LIB_SRCS
   "src/*.cc"
   "src/**/*.cc"
 )
+
 file(GLOB TEST_SRCS
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
   "src/*_test.cpp"
   "src/**/*_test.cpp"
 )
 
-
 # MESSAGE(STATUS "${LIB_SRCS}")
 # MESSAGE(STATUS "${TEST_SRCS}")
-
-#-------boost--------------------------
-ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
-ADD_DEFINITIONS(-DBOOST_LOG_USE_NATIVE_SYSLOG)
-
-#-------library------------------------
-add_library(aries SHARED ${LIB_SRCS})
-target_compile_features(aries PRIVATE cxx_range_for)
 
 set(LIB_LINKS
   pthread
@@ -41,6 +33,14 @@ set(LIB_LINKS
   fruit
   aries
 )
+
+#-------boost--------------------------
+ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
+ADD_DEFINITIONS(-DBOOST_LOG_USE_NATIVE_SYSLOG)
+
+#-------library------------------------
+add_library(aries SHARED ${LIB_SRCS})
+target_compile_features(aries PRIVATE cxx_range_for)
 
 #-------binary-------------------------
 
@@ -77,8 +77,8 @@ add_custom_target(uninstall
 #--------------testing-----------------
 enable_testing()
 find_package(GTest REQUIRED)
-add_executable(aries_test ${TEST_SRCS} ${LIB_SRCS})
-target_compile_features(aries_test PRIVATE cxx_range_for)
-target_link_libraries(aries_test ${LIB_LINKS} GTest::GTest GTest::Main)
+add_executable(unit_test ${TEST_SRCS} ${LIB_SRCS})
+target_compile_features(unit_test PRIVATE cxx_range_for)
+target_link_libraries(unit_test ${LIB_LINKS} GTest::GTest GTest::Main)
 
-add_test(runUnitTests aries_test)
+add_test(runUnitTests unit_test)
