@@ -30,7 +30,7 @@ YAML::Node Engine::config() {
   node["database"]["driver"] = "postgres";
   node["database"]["host"] = "localhost";
   node["database"]["port"] = 5432;
-  node["database"]["name"] = "aries";
+  node["database"]["name"] = "aries_d";
   node["database"]["user"] = "postgres";
   node["database"]["password"] = "";
   node["database"]["timeout"] = 5;

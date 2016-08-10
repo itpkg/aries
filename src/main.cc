@@ -23,8 +23,8 @@ App *getApp(std::string file) {
 
 void init(std::string appName) {
 #ifdef NDEBUG
-  aries::log::init_native_syslog();
-// aries::log::init_file(appName);
+  aries::log::show_debug(false);
+  aries::log::use_native_syslog_backend();
 #else
 
 #endif

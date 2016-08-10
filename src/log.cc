@@ -17,10 +17,14 @@ typedef sinks::synchronous_sink<sinks::syslog_backend> sink_t;
 
 namespace aries {
 namespace log {
-void init_native_syslog() {
-  logging::core::get()->set_filter(logging::trivial::severity >=
-                                   logging::trivial::info);
+void show_debug(bool b) {
+  if (!b) {
+    logging::core::get()->set_filter(logging::trivial::severity >=
+                                     logging::trivial::info);
+  }
+}
 
+void use_native_syslog_backend() {
   boost::shared_ptr<logging::core> core = logging::core::get();
 
   // Create a backend
@@ -36,12 +40,9 @@ void init_native_syslog() {
   // Wrap it into the frontend and register in the core.
   // The backend requires synchronization in the frontend.
   core->add_sink(boost::make_shared<sink_t>(backend));
-
-  logging::core::get()->set_filter(logging::trivial::severity >=
-                                   logging::trivial::info);
 }
 
-void init_file(std::string appName) {
+void use_file_backend(std::string appName) {
 
   logging::add_file_log(
       keywords::file_name = appName + "_%N.log",
@@ -55,9 +56,6 @@ void init_file(std::string appName) {
                                "TimeStamp", "%Y-%m-%d %H:%M:%S")
                         << " [" << logging::trivial::severity << "] "
                         << expr::smessage));
-
-  logging::core::get()->set_filter(logging::trivial::severity >=
-                                   logging::trivial::info);
 
   logging::add_common_attributes();
   expr::attr<logging::trivial::severity_level>("Severity");

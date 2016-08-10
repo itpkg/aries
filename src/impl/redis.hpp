@@ -1,6 +1,6 @@
 
-#ifndef AIRES_ORM_CACHE_REDIS_H
-#define AIRES_ORM_CACHE_REDIS_H
+#ifndef AIRES_IMPL_REDIS_H
+#define AIRES_IMPL_REDIS_H
 
 #include "../cache.hpp"
 
@@ -10,7 +10,7 @@ namespace aries {
 namespace cache {
 class Redis : public Cache {
 public:
-  Redis(const char *host, int port, int db, int timeout);
+  Redis(const char *prefix, const char *host, int port, int db, int timeout);
   ~Redis();
   void set(const char *key, const char *val, uint ttl);
   const char *get(const char *key);
