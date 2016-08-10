@@ -9,8 +9,8 @@
 namespace aries {
 class DB {
 public:
-  virtual void call(const char *sql,
-                    std::initializer_list<const char *> params) = 0;
+  virtual std::vector<const char *>
+  query(const char *sql, std::initializer_list<const char *> params) = 0;
 };
 }
 
