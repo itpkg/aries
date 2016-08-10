@@ -9,8 +9,14 @@ namespace po = boost::program_options;
 
 namespace aries{
 
-  App* getApp() {
+  App* getApp(std::string file) {
     fruit::Component<App> root = fruit::createComponent();
+    BOOST_LOG_TRIVIAL(info) << "load config from file " << file;
+    YAML::Node node = YAML::LoadFile(file);
+
+    //BOOST_LOG_TRIVIAL(debug) << node["database"]["driver"].as<std::string>();
+
+    //TODO
     fruit::Injector<aries::App> injector(root);
     return injector.get<aries::App*>();
   }
@@ -114,7 +120,8 @@ namespace aries{
 
             std::ofstream fout(config);
             for(auto en : engines){
-              fout <<  en->config();
+              fout << en->config();
+              fout << std::endl;
             }
             fout.close();
             return EXIT_SUCCESS;
@@ -131,7 +138,8 @@ namespace aries{
         }
 
         // application code here //
-
+        auto app = getApp(config);
+        //TODO
         throw std::invalid_argument("not support");
       }
       catch(std::exception& e)
