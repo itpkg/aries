@@ -4,8 +4,8 @@
 namespace aries {
 namespace platform {
 
-std::vector<orm::Migration *> Engine::migrations() {
-  std::vector<orm::Migration *> items;
+std::vector<Migration *> Engine::migrations() {
+  std::vector<Migration *> items;
   return items;
 }
 std::vector<std::string> Engine::seed() {
@@ -24,11 +24,23 @@ YAML::Node Engine::config() {
   YAML::Node node;
   auto buf = random_bytes(512);
   std::string secret(buf.begin(), buf.end());
+  node["host"] = "http://localhost";
   node["secret"] = to_base64(secret);
+
   node["database"]["driver"] = "postgres";
-  node["database"]["url"] = "postgres@localhost:5432/aries";
+  node["database"]["host"] = "localhost";
+  node["database"]["port"] = 5432;
+  node["database"]["name"] = "aries";
+  node["database"]["user"] = "postgres";
+  node["database"]["password"] = "";
+  node["database"]["timeout"] = 5;
+
   node["cache"]["driver"] = "redis";
-  node["cache"]["url"] = "tcp://localhost:6379/2";
+  node["cache"]["host"] = "localhost";
+  node["cache"]["port"] = 6379;
+  node["cache"]["db"] = 0;
+  node["cache"]["timeout"] = 5;
+
   return node;
 }
 

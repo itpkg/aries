@@ -2,8 +2,8 @@
 
 namespace aries {
 namespace books {
-std::vector<orm::Migration *> Engine::migrations() {
-  std::vector<orm::Migration *> items;
+std::vector<Migration *> Engine::migrations() {
+  std::vector<Migration *> items;
   return items;
 }
 std::vector<std::string> Engine::seed() {

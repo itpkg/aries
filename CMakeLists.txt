@@ -25,6 +25,7 @@ set(LIB_LINKS
   yaml-cpp
 
   hiredis
+  pq
 
   boost_program_options
   boost_filesystem

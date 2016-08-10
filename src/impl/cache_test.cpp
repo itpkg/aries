@@ -1,6 +1,4 @@
-#include "memcache.hpp"
 #include "redis.hpp"
-
 #include <gtest/gtest.h>
 
 bool test_cache(aries::Cache *c) {
@@ -25,5 +23,3 @@ bool test_cache(aries::Cache *c) {
 TEST(cache, redis) {
   ASSERT_TRUE(test_cache(new aries::cache::Redis("localhost", 6379, 1, 5)));
 }
-
-TEST(cache, memche) {}

@@ -2,7 +2,8 @@
 #ifndef AIRES_ORM_CACHE_REDIS_H
 #define AIRES_ORM_CACHE_REDIS_H
 
-#include "cache.hpp"
+#include "../cache.hpp"
+
 #include <hiredis/hiredis.h>
 
 namespace aries {
