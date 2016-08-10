@@ -6,12 +6,14 @@ file(GLOB LIB_SRCS
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/"
   "src/*.cc"
   "src/**/*.cc"
+  "src/**/**/*.cc"
 )
 
 file(GLOB TEST_SRCS
   RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
   "src/*_test.cpp"
   "src/**/*_test.cpp"
+  "src/**/**/*_test.cpp"
 )
 
 # MESSAGE(STATUS "${LIB_SRCS}")

@@ -1,0 +1,3 @@
+#ifndef AIRES_ENGINES_OPS_VPN_H
+#define AIRES_ENGINES_OPS_VPN_H
+#endif

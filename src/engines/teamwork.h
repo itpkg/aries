@@ -1,0 +1,3 @@
+#ifndef AIRES_ENGINES_TEAMWORK_H
+#define AIRES_ENGINES_TEAMWORK_H
+#endif
