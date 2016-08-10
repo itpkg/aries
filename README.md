@@ -37,12 +37,14 @@ make install
 
 - <https://google.github.io/styleguide/cppguide.html>
 - <https://github.com/google/fruit>
+- <https://github.com/jbeder/yaml-cpp/>
+- <https://github.com/google/googletest>
 
 - <https://github.com/gflags/gflags>
 - <https://github.com/google/re2>
 - <https://github.com/google/flatbuffers>
 - <https://github.com/google/glog>
-- <https://github.com/google/googletest>
+
 - <https://github.com/dropbox/json11>
 - <https://github.com/facebook/proxygen>
 - <https://github.com/facebook/folly>

@@ -1,11 +1,12 @@
 #include "app.h"
 
+#include "log.h"
+#include "utils.h"
+
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-
 #include <iostream>
-#include <cstdlib>
 
 
 void init(std::string appName){
@@ -16,7 +17,6 @@ void init(std::string appName){
 
   #endif
 }
-
 
 
 int main(int argc, char** argv){
@@ -48,7 +48,7 @@ int main(int argc, char** argv){
 
         if ( vm.count("help")  )
         {
-          std::cout << appName << " is a web framework for c++." << std::endl
+          std::cout << appName << " is build by aries web framework(https://github.com/itpkg/aries)." << std::endl
                     << desc << std::endl;
           return EXIT_SUCCESS;
         }
@@ -61,8 +61,25 @@ int main(int argc, char** argv){
 
         if ( vm.count("init")  )
         {
-          //TODO generate config file
-          BOOST_LOG_TRIVIAL(info) << "generate file " << config << ".";
+          BOOST_LOG_TRIVIAL(info) << "generate file " << config;
+          YAML::Node node;
+          node["secrets"] = aries::random_bytes(512);
+          node["http"]["host"]="localhost";
+          node["http"]["port"]=8080;
+          node["database"]["driver"] = "postgres";
+          node["database"]["url"] = "postgres@localhost:5432/aries";
+          node["cache"]["driver"] = "redis";
+          node["cache"]["url"] = "tcp://localhost:6379/2";
+          node["jobs"] = 5;
+          node["daemon"] = false;
+
+          if ( std::ifstream(config) ) {
+            throw std::invalid_argument("file already exists");
+          }
+
+          std::ofstream fout(config);
+          fout << node;
+          fout.close();
           return EXIT_SUCCESS;
         }
 
@@ -83,7 +100,7 @@ int main(int argc, char** argv){
     }
     catch(std::exception& e)
     {
-      std::cerr << "Unhandled exception reached the top of main: "
+      std::cerr << "Unhandled exception: "
                 << e.what() << ", application will now exit" << std::endl;
       return EXIT_FAILURE;
 

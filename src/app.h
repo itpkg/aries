@@ -1,10 +1,8 @@
 #ifndef AIRES_APP_H
 #define AIRES_APP_H
 
-#include "log.h"
-
 #include <fruit/fruit.h>
-
+#include <yaml-cpp/yaml.h>
 
 namespace aries{
   class App{
@@ -13,6 +11,7 @@ namespace aries{
 
     void start();
   private:
+    YAML::Node config;
   };
 
   fruit::Component<App> getApp(std::string file);
