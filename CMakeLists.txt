@@ -1,8 +1,21 @@
 cmake_minimum_required (VERSION 2.8)
 project (aries CXX)
 
-aux_source_directory(src LIB_SRCS)
-list (REMOVE_ITEM LIB_SRCS src/main.cpp)
+
+file(GLOB LIB_SRCS
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}/"
+  "src/*.cc"
+  "src/**/*.cc"
+)
+file(GLOB TEST_SRCS
+  RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+  "src/*_test.cpp"
+  "src/**/*_test.cpp"
+)
+
+
+# MESSAGE(STATUS "${LIB_SRCS}")
+# MESSAGE(STATUS "${TEST_SRCS}")
 
 #-------boost--------------------------
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
@@ -12,12 +25,7 @@ ADD_DEFINITIONS(-DBOOST_LOG_USE_NATIVE_SYSLOG)
 add_library(aries SHARED ${LIB_SRCS})
 target_compile_features(aries PRIVATE cxx_range_for)
 
-#-------binary-------------------------
-
-add_executable(demo src/main.cpp)
-target_compile_features(demo PRIVATE cxx_range_for)
-
-target_link_libraries(demo
+set(LIB_LINKS
   pthread
   jemalloc
   yaml-cpp
@@ -33,6 +41,13 @@ target_link_libraries(demo
   fruit
   aries
 )
+
+#-------binary-------------------------
+
+add_executable(demo src/main.cpp)
+target_compile_features(demo PRIVATE cxx_range_for)
+
+target_link_libraries(demo ${LIB_LINKS})
 set_target_properties(demo PROPERTIES OUTPUT_NAME aries)
 
 #--------install-----------------------
@@ -62,8 +77,8 @@ add_custom_target(uninstall
 #--------------testing-----------------
 enable_testing()
 find_package(GTest REQUIRED)
-#find_package(GMock REQUIRED)
-include_directories(
-    ${GTEST_INCLUDE_DIRS}
-  #  ${GMOCK_INCLUDE_DIRS}
-)
+add_executable(aries_test ${TEST_SRCS} ${LIB_SRCS})
+target_compile_features(aries_test PRIVATE cxx_range_for)
+target_link_libraries(aries_test ${LIB_LINKS} GTest::GTest GTest::Main)
+
+add_test(runUnitTests aries_test)

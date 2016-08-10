@@ -14,12 +14,12 @@ mkdir build
 cd build
 
 # gcc
-cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
 # clang
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_INSTALL_PREFIX=/usr ..
 
 make
-make install
+make install/strip
 
 ./demo
 ```
