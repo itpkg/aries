@@ -4,10 +4,12 @@
 #include <vector>
 
 namespace aries {
+namespace orm {
 class Migration {
 public:
-  virtual std::vector<std::string> up() = 0;
-  virtual std::vector<std::string> down() = 0;
-  virtual std::string name() = 0;
+  std::vector<std::string> up;
+  std::vector<std::string> down;
+  std::string name;
 };
+}
 }

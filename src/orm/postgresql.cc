@@ -4,6 +4,23 @@
 namespace aries {
 namespace orm {
 
+void PostgreSql::init() {
+  Migration mig;
+  mig.name = migration_init;
+  mig.up.push_back("CREATE TABLE IF NOT EXISTS schema_migrations(id SERIAL, "
+                   "version VARCHAR(255) NOT NULL UNIQUE, created TIMESTAME "
+                   "NOT NULL DEFAULT NOW)");
+  mig.down.push_back("DROP TABLE IF EXISTS schema_migrations");
+  this->migrations.insert(this->migrations.begin(), &mig);
+
+  this->setQuery(
+      migration_last,
+      "SELECT id, version FROM schema_migrations ORDER BY id DESC LIMIT 1");
+  this->setQuery(migration_del, "DELETE schema_migrations WHERE id = $1");
+  this->setQuery(migration_add,
+                 "INSERT INTO schema_migrations(version) VALUES($1)");
+}
+
 PostgreSql::PostgreSql(const char *host, int port, const char *name,
                        const char *user, const char *password, const char *mode,
                        uint timeout) {

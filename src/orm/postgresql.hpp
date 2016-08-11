@@ -15,6 +15,7 @@ public:
   PostgreSql(const char *host, int port, const char *name, const char *user,
              const char *password, const char *mode, uint timeout);
   ~PostgreSql();
+  void init();
   std::vector<const char *> query(const char *sql,
                                   std::initializer_list<const char *> params);
 
