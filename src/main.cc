@@ -55,17 +55,26 @@ int main(int argc, char **argv) {
     config.add_options()("init,i", "generate config files if not exists.");
 
     po::options_description database("Database operations");
-    database.add_options()("db-create", "[TODO] create new database.")(
-        "db-console", "[TODO] connect to database.")(
-        "db-migrate", "[TODO] migrate database.")(
-        "db-rollback", "[TODO] rollback database changes.")(
-        "db-drop", "[TODO] drop database.");
+    database.add_options()("db-create", "create new database.")(
+        "db-console", "connect to database server.")("db-migrate",
+                                                     "migrate database.")(
+        "db-rollback", "rollback database changes.")("db-drop",
+                                                     "drop database.");
+
+    po::options_description cache("Cache operations");
+    cache.add_options()("cache-console,C", "connect to cache server.")(
+        "cache-clear", "clear cache.");
 
     po::options_description desc("Global options");
-    desc.add(config).add(server).add(database).add(nginx).add_options()(
-        "config,c", po::value<std::string>()->default_value("config.yaml"),
-        "config file's name.")("help,h", "print help messages.")(
-        "version,v", "print application version.");
+    desc.add(config)
+        .add(server)
+        .add(cache)
+        .add(database)
+        .add(nginx)
+        .add_options()("config,c",
+                       po::value<std::string>()->default_value("config.yaml"),
+                       "config file's name.")("help,h", "print help messages.")(
+            "version,v", "print application version.");
 
     po::variables_map vm;
     std::string cfg;
@@ -82,6 +91,8 @@ int main(int argc, char **argv) {
       ARIES_REGISTER_OPTION("db-drop", db_drop(cfg))
       ARIES_REGISTER_OPTION("db-console", db_console(cfg))
       ARIES_REGISTER_OPTION("db-rollback", db_rollback(cfg))
+      ARIES_REGISTER_OPTION("cache-console", cache_console(cfg))
+      ARIES_REGISTER_OPTION("cache-clear", cache_clear(cfg))
 
       po::notify(vm);
     } catch (po::error &e) {

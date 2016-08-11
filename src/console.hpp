@@ -20,6 +20,9 @@ void db_create(std::string cfg);
 void db_drop(std::string cfg);
 void db_rollback(std::string cfg);
 
+void cache_console(std::string cfg);
+void cache_clear(std::string cfg);
+
 orm::DB *openDB(std::string file);
 cache::Cache *openCache(std::string file);
 orm::Driver *getDbDriver(std::string file);

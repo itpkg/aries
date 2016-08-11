@@ -66,6 +66,20 @@ void Redis::del(const char *key) {
     freeReplyObject(reply);
   }
 }
+void Redis::clear() {
+  BOOST_LOG_TRIVIAL(info) << "clear all cache items.";
+  if (this->ctx != NULL) {
+    auto keys = this->keys();
+    if (!keys.empty()) {
+      std::ostringstream buf;
+      for (auto k : keys) {
+        buf << " " << k;
+      }
+      auto reply = redisCommand(this->ctx, "DEL %s", buf.str().c_str());
+      freeReplyObject(reply);
+    }
+  }
+}
 
 std::vector<const char *> Redis::keys() {
   std::vector<const char *> items;

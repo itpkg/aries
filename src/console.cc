@@ -12,7 +12,13 @@ namespace console {
 
 void db_migrate(std::string cfg) {
   auto db = openDB(cfg);
+  db->initScheme();
   db->migrate();
+}
+void db_rollback(std::string cfg) {
+  auto db = openDB(cfg);
+  db->initScheme();
+  db->rollback();
 }
 void db_console(std::string cfg) {
   auto db = getDbDriver(cfg);
@@ -26,9 +32,14 @@ void db_drop(std::string cfg) {
   auto db = getDbDriver(cfg);
   utils::shell(db->drop());
 }
-void db_rollback(std::string cfg) {
-  auto db = openDB(cfg);
-  db->rollback();
+
+void cache_console(std::string cfg) {
+  auto ch = openCache(cfg);
+  utils::shell(ch->console());
+}
+void cache_clear(std::string cfg) {
+  auto ch = openCache(cfg);
+  ch->clear();
 }
 
 void init_config(std::string name) {

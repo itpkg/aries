@@ -14,6 +14,7 @@ public:
   void set(const char *key, const char *val, uint ttl);
   const char *get(const char *key);
   void del(const char *key);
+  void clear();
   std::vector<const char *> keys();
 
 private:
