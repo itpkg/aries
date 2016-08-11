@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
-bool test_db(aries::DB *db) {
+bool test_db(aries::orm::DB *db) {
   db->query("SELECT CURRENT_TIMESTAMP", {});
 
   db->query("CREATE TABLE IF NOT EXISTS tests(id SERIAL, msg1 VARCHAR(255), "
@@ -24,6 +24,6 @@ bool test_db(aries::DB *db) {
 }
 
 TEST(db, postgresql) {
-  ASSERT_TRUE(test_db(new aries::database::PostgreSql(
+  ASSERT_TRUE(test_db(new aries::orm::PostgreSql(
       "localhost", 5432, "aries_t", "postgres", "", "disable", 10)));
 }

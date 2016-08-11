@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../log.hpp"
-#include "../migration.hpp"
+#include "../orm/migration.hpp"
 #include "router.hpp"
 
 #include <map>

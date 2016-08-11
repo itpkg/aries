@@ -3,14 +3,14 @@
 * https://www.postgresql.org/docs/9.5/static/libpq-connect.html#LIBPQ-PARAMKEYWORDS
 */
 
-#include "../database.hpp"
+#include "../orm/database.hpp"
 
 #include <cstdlib>
 #include <libpq-fe.h>
 
 namespace aries {
-namespace database {
-class PostgreSql : public DB {
+namespace orm {
+class PostgreSql : public orm::DB {
 public:
   PostgreSql(const char *host, int port, const char *name, const char *user,
              const char *password, const char *mode, uint timeout);

@@ -2,7 +2,7 @@
 #include "postgresql.hpp"
 
 namespace aries {
-namespace database {
+namespace orm {
 
 PostgreSql::PostgreSql(const char *host, int port, const char *name,
                        const char *user, const char *password, const char *mode,
