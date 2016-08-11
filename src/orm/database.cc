@@ -30,12 +30,29 @@ void DB::migrate() {
     // }
 
     if (this->toUint(rst.front()) == 0) {
+      for (auto q : mig.up) {
+        this->query(q, {});
+      }
       this->query(this->getQuery(migration_add), {mig.version});
     }
   }
 }
 
-void DB::rollback() {}
+void DB::rollback() {
+  auto rst = this->query(this->getQuery(migration_last), {});
+  // BOOST_LOG_TRIVIAL(debug) << rst.size();
+  if (rst.size() == 1) {
+    for (auto mig : this->migrations) {
+      if (strcmp(rst.front(), mig.version) == 0) {
+        for (auto q : mig.down) {
+          this->query(q, {});
+        }
+        break;
+      }
+    }
+    this->query(this->getQuery(migration_del), {rst.front()});
+  }
+}
 
 void DB::setQuery(std::string name, const char *sql) {
   this->queries[name] = sql;

@@ -5,8 +5,8 @@ namespace aries {
 namespace orm {
 
 void PostgreSql::init() {
-  this->query("CREATE TABLE IF NOT EXISTS schema_migrations(id SERIAL, "
-              "version VARCHAR(255) NOT NULL UNIQUE, created TIMESTAMP "
+  this->query("CREATE TABLE IF NOT EXISTS schema_migrations(version "
+              "VARCHAR(255) NOT NULL UNIQUE, created TIMESTAMP "
               "NOT NULL DEFAULT NOW())",
               {});
 
@@ -16,8 +16,9 @@ void PostgreSql::init() {
 
   this->setQuery(
       migration_last,
-      "SELECT id, version FROM schema_migrations ORDER BY id DESC LIMIT 1");
-  this->setQuery(migration_del, "DELETE schema_migrations WHERE id = $1");
+      "SELECT version FROM schema_migrations ORDER BY created DESC LIMIT 1");
+  this->setQuery(migration_del,
+                 "DELETE FROM schema_migrations WHERE version = $1");
   this->setQuery(migration_add,
                  "INSERT INTO schema_migrations(version) VALUES($1)");
 }
