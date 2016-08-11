@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../cache/cache.hpp"
 #include "../orm/database.hpp"
 #include "router.hpp"
 

@@ -46,6 +46,7 @@ ADD_DEFINITIONS(-DBOOST_LOG_USE_NATIVE_SYSLOG)
 #-------library------------------------
 add_library(aries SHARED ${LIB_SRCS})
 target_compile_features(aries PRIVATE cxx_range_for)
+set_target_properties(aries PROPERTIES VERSION 1.0 SOVERSION 1)
 
 #-------binary-------------------------
 
