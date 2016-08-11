@@ -7,9 +7,7 @@ namespace platform {
 
 class Engine : public web::Engine {
 public:
-  std::vector<orm::Migration *> migrations();
-  std::vector<std::string> seed();
-  std::map<std::string, std::string> queries();
+  void scheme(orm::Dialect *dia);
   void mount(web::Router *rt);
   YAML::Node config();
   void init();

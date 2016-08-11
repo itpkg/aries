@@ -83,7 +83,7 @@ add_custom_target(uninstall
 #--------------testing-----------------
 enable_testing()
 find_package(GTest REQUIRED)
-add_executable(unit_tests ${TEST_SRCS} ${LIB_SRCS})
+add_executable(unit_tests ${TEST_SRCS})
 target_compile_features(unit_tests PRIVATE cxx_range_for)
 target_link_libraries(unit_tests ${LIB_LINKS} GTest::GTest GTest::Main)
 

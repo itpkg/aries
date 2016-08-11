@@ -5,21 +5,19 @@
 namespace aries {
 namespace platform {
 
-std::vector<orm::Migration *> Engine::migrations() {
-  std::vector<orm::Migration *> items;
-  return items;
-}
-std::vector<std::string> Engine::seed() {
-  std::vector<std::string> items;
-  return items;
-}
-std::map<std::string, std::string> Engine::queries() {
-  std::map<std::string, std::string> items;
-  items["user.find_by_id"] = "SELECT * FROM USERS WHERE ID = $1";
-  return items;
+void Engine::scheme(orm::Dialect *dia) {
+  // TODO
+  dia->addMigration(orm::dialect::postgresql, "platform.create_users",
+                    {"CREATE TABLE IF NOT EXISTS users(id SERIAL)"},
+                    {"DROP TABLE IF EXISTS users"});
+
+  dia->set(orm::dialect::postgresql, "platform.user.find_by_id",
+           "SELECT * FROM USERS WHERE ID = $1");
 }
 
-void Engine::mount(web::Router *rt) {}
+void Engine::mount(web::Router *rt) {
+  // TODO
+}
 
 YAML::Node Engine::config() {
   YAML::Node node;

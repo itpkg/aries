@@ -24,9 +24,7 @@ make install/strip
 ./demo
 ```
 
-## Editor
-
-### Atom
+## Atom editor plugins
 
 - language-cmake
 - language-cpp14
