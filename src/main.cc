@@ -58,7 +58,6 @@ int main(int argc, char **argv) {
     database.add_options()("db-create", "[TODO] create new database.")(
         "db-console", "[TODO] connect to database.")(
         "db-migrate", "[TODO] migrate database.")(
-        "db-seed", "[TODO] insert seed data into database.")(
         "db-rollback", "[TODO] rollback database changes.")(
         "db-drop", "[TODO] drop database.");
 

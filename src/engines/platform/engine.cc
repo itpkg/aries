@@ -21,12 +21,12 @@ void Engine::mount(web::Router *rt) {
 
 YAML::Node Engine::config() {
   YAML::Node node;
-  auto buf = random_bytes(512);
+  auto buf = utils::random_bytes(512);
   std::string secret(buf.begin(), buf.end());
   node["http"]["host"] = "localhost";
   node["http"]["port"] = 8080;
   node["http"]["ssl"] = false;
-  node["secret"] = to_base64(secret);
+  node["secret"] = utils::to_base64(secret);
 
   node["database"]["driver"] = orm::dialect::postgresql;
   node["database"]["host"] = "localhost";

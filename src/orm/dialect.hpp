@@ -9,7 +9,7 @@ namespace aries {
 namespace orm {
 
 namespace dialect {
-const std::string postgresql = "pgsql";
+const std::string postgresql = "postgres";
 const std::string mysql = "mysql";
 const std::string sqlite3 = "sqlite3";
 const std::string oracle = "oracle";

@@ -6,10 +6,12 @@
 #include <boost/archive/iterators/transform_width.hpp>
 
 #include <algorithm>
+#include <cstdlib>
 #include <functional>
 #include <random>
 
 namespace aries {
+namespace utils {
 std::vector<uint8_t> random_bytes(uint size) {
   std::vector<uint8_t> buf;
   buf.resize(size);
@@ -36,5 +38,11 @@ std::string from_base64(const std::string &val) {
   return boost::algorithm::trim_right_copy_if(
       std::string(It(std::begin(val)), It(std::end(val))),
       [](char c) { return c == '\0'; });
+}
+
+void shell(std::string cmd) {
+  BOOST_LOG_TRIVIAL(debug) << cmd;
+  system(cmd.c_str());
+}
 }
 }

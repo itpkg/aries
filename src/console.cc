@@ -1,6 +1,7 @@
 #include "cache/redis.hpp"
 #include "console.hpp"
 #include "orm/postgresql.hpp"
+#include "utils.hpp"
 #include "web/engine.hpp"
 
 #include <fstream>
@@ -9,11 +10,26 @@
 namespace aries {
 namespace console {
 
-void db_migrate(std::string cfg) {}
-void db_console(std::string cfg) {}
-void db_create(std::string cfg) {}
-void db_drop(std::string cfg) {}
-void db_rollback(std::string cfg) {}
+void db_migrate(std::string cfg) {
+  auto db = openDB(cfg);
+  db->migrate();
+}
+void db_console(std::string cfg) {
+  auto db = getDbDriver(cfg);
+  utils::shell(db->console());
+}
+void db_create(std::string cfg) {
+  auto db = getDbDriver(cfg);
+  utils::shell(db->create());
+}
+void db_drop(std::string cfg) {
+  auto db = getDbDriver(cfg);
+  utils::shell(db->drop());
+}
+void db_rollback(std::string cfg) {
+  auto db = openDB(cfg);
+  db->rollback();
+}
 
 void init_config(std::string name) {
   BOOST_LOG_TRIVIAL(info) << "generate file " << name;
@@ -42,7 +58,7 @@ void show_version() { std::cout << "2016.08.09" << std::endl; }
 
 inline YAML::Node readConfig(std::string file) { return YAML::LoadFile(file); }
 
-orm::DB *openDB(std::string file) {
+orm::Driver *getDbDriver(std::string file) {
   auto cfg = readConfig(file);
   orm::Driver *drv;
   auto type = cfg["database"]["driver"].as<std::string>();
@@ -58,7 +74,16 @@ orm::DB *openDB(std::string file) {
     throw std::invalid_argument("unsupport database driver " + type);
   }
 
+  return drv;
+}
+
+orm::DB *openDB(std::string file) {
   auto dia = new orm::Dialect;
+  for (auto en : aries::engines) {
+    en->scheme(dia);
+  }
+  auto drv = getDbDriver(file);
+  drv->open();
   return new orm::DB(drv, dia);
 }
 

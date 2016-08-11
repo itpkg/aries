@@ -57,6 +57,7 @@ bool test_driver(aries::orm::Driver *db) {
 TEST(orm, postgresql) {
   aries::orm::Driver *drv = new aries::orm::PostgreSql(
       "localhost", 5432, "aries_t", "postgres", "", "disable", 10);
+  drv->open();
   ASSERT_TRUE(test_driver(drv));
   ASSERT_TRUE(test_pg_db(drv));
 }

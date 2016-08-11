@@ -7,6 +7,10 @@ namespace cache {
 Redis::Redis(std::string prefix, std::string host, int port, int db,
              int timeout) {
   this->prefix = prefix.c_str();
+  this->host = host;
+  this->port = port;
+  this->db = db;
+
   BOOST_LOG_TRIVIAL(debug) << "open redis: tcp://" << host << ":" << port << "/"
                            << db;
   this->ctx = redisConnectWithTimeout(host.c_str(), port, {timeout});
@@ -28,6 +32,13 @@ Redis::~Redis() {
   if (this->ctx != NULL) {
     redisFree(this->ctx);
   }
+}
+
+std::string Redis::console() {
+  std::ostringstream buf;
+  buf << "redis-cli -h " << this->host << " -p " << this->port << " -n "
+      << this->db;
+  return buf.str();
 }
 
 void Redis::set(const char *key, const char *val, uint ttl) {

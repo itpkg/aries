@@ -1,5 +1,8 @@
 #pragma once
 
+#include "cache/cache.hpp"
+#include "orm/database.hpp"
+
 #include <boost/program_options/options_description.hpp>
 #include <string>
 
@@ -16,5 +19,9 @@ void db_console(std::string cfg);
 void db_create(std::string cfg);
 void db_drop(std::string cfg);
 void db_rollback(std::string cfg);
+
+orm::DB *openDB(std::string file);
+cache::Cache *openCache(std::string file);
+orm::Driver *getDbDriver(std::string file);
 }
 }

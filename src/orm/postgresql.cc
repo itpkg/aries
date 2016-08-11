@@ -5,15 +5,38 @@
 namespace aries {
 namespace orm {
 
-std::string PostgreSql::name() { return dialect::postgresql; }
-
-PostgreSql::PostgreSql(std::string host, const int port, std::string name,
-                       std::string user, std::string password,
-                       std::string ssl_mode, uint timeout) {
+std::string PostgreSql::console() {
   std::ostringstream buf;
-  buf << "host=" << host << " port=" << port << " dbname=" << name
-      << " user=" << user << " password=" << password << " sslmode=" << ssl_mode
-      << " connect_timeout=" << timeout;
+  buf << "psql -h " << this->host << " -p " << this->port << " -U "
+      << this->user << " " << this->name;
+
+  return buf.str();
+}
+std::string PostgreSql::create() {
+  std::ostringstream buf;
+  buf << "psql -h " << this->host << " -p " << this->port << " -U "
+      << this->user << " -c "
+      << "\"CREATE DATABASE " << this->name << " WITH ENCODING='UTF8'\"";
+
+  return buf.str();
+}
+
+std::string PostgreSql::drop() {
+  std::ostringstream buf;
+  buf << "psql -h " << this->host << " -p " << this->port << " -U "
+      << this->user << " -c "
+      << "\"DROP DATABASE " << this->name << "\"";
+
+  return buf.str();
+}
+std::string PostgreSql::type() { return dialect::postgresql; }
+
+void PostgreSql::open() {
+  std::ostringstream buf;
+  buf << "host=" << this->host << " port=" << this->port
+      << " dbname=" << this->name << " user=" << this->user
+      << " password=" << this->password << " sslmode=" << this->ssl_mode
+      << " connect_timeout=" << this->timeout;
   const char *path = buf.str().c_str();
   BOOST_LOG_TRIVIAL(debug) << "open database: " << path;
   this->db = PQconnectdb(path);
@@ -22,6 +45,18 @@ PostgreSql::PostgreSql(std::string host, const int port, std::string name,
     BOOST_LOG_TRIVIAL(error) << PQerrorMessage(db);
     PQfinish(this->db);
   }
+}
+
+PostgreSql::PostgreSql(std::string host, int port, std::string name,
+                       std::string user, std::string password,
+                       std::string ssl_mode, uint timeout) {
+  this->host = host;
+  this->port = port;
+  this->name = name;
+  this->user = user;
+  this->password = password;
+  this->ssl_mode = ssl_mode;
+  this->timeout = timeout;
 }
 
 PostgreSql::~PostgreSql() { PQfinish(db); }
