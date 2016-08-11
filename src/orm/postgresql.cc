@@ -4,24 +4,7 @@
 namespace aries {
 namespace orm {
 
-void PostgreSql::init() {
-  this->query("CREATE TABLE IF NOT EXISTS schema_migrations(version "
-              "VARCHAR(255) NOT NULL UNIQUE, created TIMESTAMP "
-              "NOT NULL DEFAULT NOW())",
-              {});
-
-  this->setQuery(
-      migration_exist,
-      "SELECT count(*)::INT4 FROM schema_migrations WHERE version = $1");
-
-  this->setQuery(
-      migration_last,
-      "SELECT version FROM schema_migrations ORDER BY created DESC LIMIT 1");
-  this->setQuery(migration_del,
-                 "DELETE FROM schema_migrations WHERE version = $1");
-  this->setQuery(migration_add,
-                 "INSERT INTO schema_migrations(version) VALUES($1)");
-}
+std::string PostgreSql::name() { return "pgsql"; }
 
 PostgreSql::PostgreSql(const char *host, int port, const char *name,
                        const char *user, const char *password, const char *mode,
