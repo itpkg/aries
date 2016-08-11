@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../log.hpp"
 #include "dialect.hpp"
 #include "migration.hpp"
 
+#include <cstdint>
 #include <iostream>
 #include <map>
 #include <sstream>
@@ -12,24 +14,27 @@ namespace orm {
 
 const std::string migration_last = "migrations.last";
 const std::string migration_add = "migrations.add";
+const std::string migration_exist = "migrations.exist";
 const std::string migration_del = "migrations.del";
-const std::string migration_init = "scheme-migrations.init";
 
 class DB {
 public:
   virtual void init() = 0;
   virtual std::vector<const char *>
   query(const char *sql, std::initializer_list<const char *> params) = 0;
-  void addMigration(std::string name, std::initializer_list<std::string> up,
-                    std::initializer_list<std::string> down);
+
+  void addMigration(const char *version, std::initializer_list<const char *> up,
+                    std::initializer_list<const char *> down);
   void migrate();
   void rollback();
-  void setQuery(std::string name, std::string sql);
-  std::string getQuery(std::string name);
+  void setQuery(std::string name, const char *sql);
+  const char *getQuery(std::string name);
 
-protected:
-  std::vector<Migration *> migrations;
-  std::map<std::string, std::string> queries;
+  uint32_t toUint(const char *v);
+
+private:
+  std::vector<Migration> migrations;
+  std::map<std::string, const char *> queries;
 };
 }
 }

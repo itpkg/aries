@@ -5,13 +5,14 @@ namespace aries {
 namespace orm {
 
 void PostgreSql::init() {
-  Migration mig;
-  mig.name = migration_init;
-  mig.up.push_back("CREATE TABLE IF NOT EXISTS schema_migrations(id SERIAL, "
-                   "version VARCHAR(255) NOT NULL UNIQUE, created TIMESTAME "
-                   "NOT NULL DEFAULT NOW)");
-  mig.down.push_back("DROP TABLE IF EXISTS schema_migrations");
-  this->migrations.insert(this->migrations.begin(), &mig);
+  this->query("CREATE TABLE IF NOT EXISTS schema_migrations(id SERIAL, "
+              "version VARCHAR(255) NOT NULL UNIQUE, created TIMESTAMP "
+              "NOT NULL DEFAULT NOW())",
+              {});
+
+  this->setQuery(
+      migration_exist,
+      "SELECT count(*)::INT4 FROM schema_migrations WHERE version = $1");
 
   this->setQuery(
       migration_last,

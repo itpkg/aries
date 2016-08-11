@@ -35,6 +35,8 @@ bool test_db(aries::orm::DB *db) {
                  "create table t33(id int)", "create table t34(id int)"},
       {"drop table t34", "drop table t33", "drop table t32", "drop table t31"});
 
+  db->migrate();
+  db->rollback();
   return true;
 }
 
