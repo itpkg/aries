@@ -10,6 +10,5 @@ public:
   std::string password;
   std::string uid;
 };
-// ORM_EXPORT_CLASS(User);
 }
 }

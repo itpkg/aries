@@ -1,10 +1,12 @@
 #pragma once
 
+#include <string>
+
 namespace aries {
 namespace orm {
 class Dialect {
 public:
-  template <class C> static std::string getClassName();
+  template <class T> static std::string tableName();
 };
 }
 }
