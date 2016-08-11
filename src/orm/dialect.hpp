@@ -6,7 +6,8 @@ namespace aries {
 namespace orm {
 class Dialect {
 public:
-  template <class T> static std::string tableName();
+  template <class T> std::string tableName();
+  template <class T> std::string first();
 };
 }
 }
