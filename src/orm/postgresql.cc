@@ -7,12 +7,12 @@ namespace orm {
 
 std::string PostgreSql::name() { return dialect::postgresql; }
 
-PostgreSql::PostgreSql(const char *host, int port, const char *name,
-                       const char *user, const char *password, const char *mode,
-                       uint timeout) {
+PostgreSql::PostgreSql(std::string host, const int port, std::string name,
+                       std::string user, std::string password,
+                       std::string ssl_mode, uint timeout) {
   std::ostringstream buf;
   buf << "host=" << host << " port=" << port << " dbname=" << name
-      << " user=" << user << " password=" << password << " sslmode=" << mode
+      << " user=" << user << " password=" << password << " sslmode=" << ssl_mode
       << " connect_timeout=" << timeout;
   const char *path = buf.str().c_str();
   BOOST_LOG_TRIVIAL(debug) << "open database: " << path;

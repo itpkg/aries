@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-bool test_cache(aries::Cache *c) {
+bool test_cache(aries::cache::Cache *c) {
   char key[] = "hi";
   char val[] = "Hello, Aries!";
   c->set(key, val, 60 * 60);

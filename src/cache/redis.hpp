@@ -8,7 +8,7 @@ namespace aries {
 namespace cache {
 class Redis : public Cache {
 public:
-  Redis(const char *prefix, const char *host, int port, int db, int timeout);
+  Redis(std::string prefix, std::string host, int port, int db, int timeout);
   ~Redis();
   void set(const char *key, const char *val, uint ttl);
   const char *get(const char *key);

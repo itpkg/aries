@@ -28,15 +28,17 @@ YAML::Node Engine::config() {
   node["http"]["ssl"] = false;
   node["secret"] = to_base64(secret);
 
-  node["database"]["driver"] = "postgres";
+  node["database"]["driver"] = orm::dialect::postgresql;
   node["database"]["host"] = "localhost";
   node["database"]["port"] = 5432;
   node["database"]["name"] = "aries_d";
   node["database"]["user"] = "postgres";
   node["database"]["password"] = "";
+  node["database"]["ssl_mode"] = "disable";
   node["database"]["timeout"] = 5;
 
-  node["cache"]["driver"] = "redis";
+  node["cache"]["driver"] = cache::dialect::redis;
+  node["cache"]["prefix"] = "cache://";
   node["cache"]["host"] = "localhost";
   node["cache"]["port"] = 6379;
   node["cache"]["db"] = 0;

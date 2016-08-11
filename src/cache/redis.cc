@@ -4,12 +4,12 @@
 namespace aries {
 namespace cache {
 
-Redis::Redis(const char *prefix, const char *host, int port, int db,
+Redis::Redis(std::string prefix, std::string host, int port, int db,
              int timeout) {
-  this->prefix = prefix;
+  this->prefix = prefix.c_str();
   BOOST_LOG_TRIVIAL(debug) << "open redis: tcp://" << host << ":" << port << "/"
                            << db;
-  this->ctx = redisConnectWithTimeout(host, port, {timeout});
+  this->ctx = redisConnectWithTimeout(host.c_str(), port, {timeout});
   if (this->ctx == NULL) {
     BOOST_LOG_TRIVIAL(error) << "can't allocate redis context";
   } else {

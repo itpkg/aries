@@ -12,8 +12,9 @@ namespace aries {
 namespace orm {
 class PostgreSql : public orm::Driver {
 public:
-  PostgreSql(const char *host, int port, const char *name, const char *user,
-             const char *password, const char *mode, uint timeout);
+  PostgreSql(std::string host, const int port, std::string name,
+             std::string user, std::string password, std::string ssl_mode,
+             uint timeout);
   ~PostgreSql();
 
   inline std::string name();
