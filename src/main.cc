@@ -1,9 +1,8 @@
+#include "console.hpp"
 #include "main.hpp"
 
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
-
-#include <iostream>
 
 namespace po = boost::program_options;
 
@@ -88,23 +87,12 @@ int main(int argc, char **argv) {
       }
 
       if (vm.count("version")) {
-        std::cout << "2016.08.09" << std::endl;
+        aries::console::do_version();
         return EXIT_SUCCESS;
       }
 
       if (vm.count("init")) {
-        BOOST_LOG_TRIVIAL(info) << "generate file " << config;
-
-        if (std::ifstream(config)) {
-          throw std::invalid_argument("file already exists");
-        }
-
-        std::ofstream fout(config);
-        for (auto en : engines) {
-          fout << en->config();
-          fout << std::endl;
-        }
-        fout.close();
+        aries::console::do_init(config);
         return EXIT_SUCCESS;
       }
 

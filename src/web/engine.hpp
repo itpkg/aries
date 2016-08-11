@@ -22,4 +22,6 @@ public:
 private:
 };
 }
+
+extern std::vector<web::Engine *> engines;
 }

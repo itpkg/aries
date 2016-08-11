@@ -6,7 +6,6 @@
 #include <vector>
 
 namespace aries {
-extern std::vector<web::Engine *> engines;
 
 class App {
 public:

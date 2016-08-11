@@ -5,7 +5,8 @@
 #include <iostream>
 
 int main(int argc, char **argv) {
-  aries::engines.push_back(new aries::platform::Engine);
-  aries::engines.push_back(new aries::books::Engine);
+  ARIES_REGISTER_ENGINE(aries::platform::Engine)
+  ARIES_REGISTER_ENGINE(aries::books::Engine)
+
   aries::main(argc, argv);
 }

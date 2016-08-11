@@ -23,7 +23,9 @@ YAML::Node Engine::config() {
   YAML::Node node;
   auto buf = random_bytes(512);
   std::string secret(buf.begin(), buf.end());
-  node["host"] = "http://localhost";
+  node["http"]["host"] = "localhost";
+  node["http"]["port"] = 8080;
+  node["http"]["ssl"] = false;
   node["secret"] = to_base64(secret);
 
   node["database"]["driver"] = "postgres";
