@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../cache.hpp"
+#include "cache.hpp"
 
 #include <hiredis/hiredis.h>
 
