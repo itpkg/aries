@@ -10,6 +10,12 @@ DB::DB(Driver *drv, Dialect *dia) {
   this->dialect = dia;
 }
 
+std::vector<const char *>
+DB::query(std::string name, std::initializer_list<const char *> params) {
+  auto sql = this->dialect->get(this->driver->name(), name);
+  return this->driver->query(sql, params);
+}
+
 void DB::initScheme() {
   this->driver->query("CREATE TABLE IF NOT EXISTS schema_migrations(version "
                       "VARCHAR(255) NOT NULL UNIQUE, created TIMESTAMP "

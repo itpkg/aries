@@ -1,5 +1,5 @@
-#include "../log.hpp"
 #include "redis.hpp"
+#include <boost/log/trivial.hpp>
 
 namespace aries {
 namespace cache {

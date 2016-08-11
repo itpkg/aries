@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../log.hpp"
 #include "dialect.hpp"
 #include "driver.hpp"
 
+#include <boost/log/trivial.hpp>
 #include <cstdint>
 #include <iostream>
 #include <sstream>
@@ -18,6 +18,9 @@ public:
   void initScheme();
   void migrate();
   void rollback();
+
+  std::vector<const char *> query(std::string name,
+                                  std::initializer_list<const char *> params);
 
   inline uint32_t toUint(const char *v);
 

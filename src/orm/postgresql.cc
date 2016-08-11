@@ -1,10 +1,11 @@
-#include "../log.hpp"
 #include "postgresql.hpp"
+
+#include <boost/log/trivial.hpp>
 
 namespace aries {
 namespace orm {
 
-std::string PostgreSql::name() { return "pgsql"; }
+std::string PostgreSql::name() { return dialect::postgresql; }
 
 PostgreSql::PostgreSql(const char *host, int port, const char *name,
                        const char *user, const char *password, const char *mode,

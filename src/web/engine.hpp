@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../log.hpp"
-#include "../orm/migration.hpp"
+#include "../orm/database.hpp"
 #include "router.hpp"
 
+#include <boost/log/trivial.hpp>
 #include <map>
 #include <vector>
 #include <yaml-cpp/yaml.h>
