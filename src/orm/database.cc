@@ -17,10 +17,9 @@ DB::query(std::string name, std::initializer_list<const char *> params) {
 }
 
 void DB::initScheme() {
-  this->driver->query("CREATE TABLE IF NOT EXISTS schema_migrations(version "
-                      "VARCHAR(255) NOT NULL UNIQUE, created TIMESTAMP "
-                      "NOT NULL DEFAULT NOW())",
-                      {});
+  this->driver->query(
+      R"(CREATE TABLE IF NOT EXISTS schema_migrations(version VARCHAR(255) NOT NULL UNIQUE, created TIMESTAMP NOT NULL DEFAULT NOW()))",
+      {});
 
   this->dialect->set(
       this->driver->type(), migration::exist,

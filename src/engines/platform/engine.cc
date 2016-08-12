@@ -8,7 +8,7 @@ namespace platform {
 void Engine::scheme(orm::Dialect *dia) {
   // TODO
   dia->addMigration(orm::dialect::postgresql, "platform.create_users",
-                    {"CREATE TABLE IF NOT EXISTS users(id SERIAL)"},
+                    {R"(CREATE TABLE IF NOT EXISTS users(id SERIAL))"},
                     {"DROP TABLE IF EXISTS users"});
 
   dia->set(orm::dialect::postgresql, "platform.user.find_by_id",

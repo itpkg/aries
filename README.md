@@ -2,9 +2,32 @@
 
 A web framework for C++ language.
 
-## Build
+## Usage(test in archlinux)
 
-- Need install [fruit](https://github.com/google/fruit.git) first.
+### [fruit](https://github.com/google/fruit.git).
+```
+git clone https://github.com/google/fruit.git
+cd fruit
+mkdir build
+cd build
+cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
+make -j
+sudo make install
+```
+
+### [mstch](https://github.com/no1msd/mstch).
+```
+git clone https://github.com/no1msd/mstch.git
+cd mstch
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
+make -j
+sudo make install
+```
+
+
+### Clone code and build
 
 ```
 git clone https://github.com/itpkg/aries.git
@@ -28,6 +51,7 @@ make install/strip
 
 - language-cmake
 - language-cpp14
+- language-mustache
 - linter-clang
 - autocomplete-clang
 - git-plus
@@ -39,6 +63,7 @@ make install/strip
 - <https://google.github.io/styleguide/cppguide.html>
 - <https://github.com/google/fruit>
 - <https://github.com/jbeder/yaml-cpp/>
+- <https://mustache.github.io/>
 - <https://github.com/google/googletest>
 
 - <https://github.com/gflags/gflags>

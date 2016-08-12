@@ -6,6 +6,7 @@
 
 #include <boost/log/trivial.hpp>
 #include <map>
+#include <mstch/mstch.hpp>
 #include <vector>
 #include <yaml-cpp/yaml.h>
 

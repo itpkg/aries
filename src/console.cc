@@ -1,14 +1,36 @@
 #include "cache/redis.hpp"
 #include "console.hpp"
 #include "orm/postgresql.hpp"
+#include "resources.hpp"
 #include "utils.hpp"
 #include "web/engine.hpp"
 
+#include <boost/filesystem/operations.hpp>
 #include <fstream>
 #include <iostream>
 
 namespace aries {
 namespace console {
+
+void nginx_conf(std::string file, bool ssl) {
+  auto cfg = readConfig(file);
+  const std::string name = "nginx.conf";
+  BOOST_LOG_TRIVIAL(info) << "generate file " << name;
+
+  mstch::map context{
+      {"root", std::string{boost::filesystem::current_path().string()}},
+      {"host", std::string{cfg["http"]["host"].as<std::string>()}},
+      {"ssl", bool{ssl}},
+      {"port", int{cfg["http"]["port"].as<int>()}},
+      {"version", std::string{"v1"}}};
+
+  if (std::ifstream(name)) {
+    throw std::invalid_argument("file already exists");
+  }
+  std::ofstream fout(name);
+  fout << mstch::render(ARIES_NGINX_CONF, context) << std::endl;
+  fout.close();
+}
 
 void db_migrate(std::string cfg) {
   auto db = openDB(cfg);
@@ -67,7 +89,10 @@ void show_help(std::string appName,
 
 void show_version() { std::cout << "2016.08.09" << std::endl; }
 
-inline YAML::Node readConfig(std::string file) { return YAML::LoadFile(file); }
+YAML::Node readConfig(std::string file) {
+  BOOST_LOG_TRIVIAL(info) << "load config from file " << file;
+  return YAML::LoadFile(file);
+}
 
 orm::Driver *getDbDriver(std::string file) {
   auto cfg = readConfig(file);

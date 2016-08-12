@@ -5,6 +5,7 @@
 
 #include <boost/program_options/options_description.hpp>
 #include <string>
+#include <yaml-cpp/yaml.h>
 
 namespace aries {
 namespace console {
@@ -22,7 +23,9 @@ void db_rollback(std::string cfg);
 
 void cache_console(std::string cfg);
 void cache_clear(std::string cfg);
+void nginx_conf(std::string cfg, bool ssl);
 
+YAML::Node readConfig(std::string file);
 orm::DB *openDB(std::string file);
 cache::Cache *openCache(std::string file);
 orm::Driver *getDbDriver(std::string file);

@@ -16,8 +16,6 @@ namespace aries {
 
 App *getApp(std::string file) {
   fruit::Component<App> root = fruit::createComponent();
-  BOOST_LOG_TRIVIAL(info) << "load config from file " << file;
-  YAML::Node node = YAML::LoadFile(file);
 
   // TODO
   fruit::Injector<aries::App> injector(root);
@@ -40,8 +38,8 @@ int main(int argc, char **argv) {
     init(appName);
 
     po::options_description nginx("Nginx files");
-    nginx.add_options()("nginx", "[TODO] generate nginx.config(http).")(
-        "nginx-with-ssl", "[TODO] generate nginx.config(https).");
+    nginx.add_options()("nginx-http", "generate nginx.config(http).")(
+        "nginx-https", "generate nginx.config(https).");
 
     po::options_description server("Server options");
 
@@ -93,6 +91,8 @@ int main(int argc, char **argv) {
       ARIES_REGISTER_OPTION("db-rollback", db_rollback(cfg))
       ARIES_REGISTER_OPTION("cache-console", cache_console(cfg))
       ARIES_REGISTER_OPTION("cache-clear", cache_clear(cfg))
+      ARIES_REGISTER_OPTION("nginx-http", nginx_conf(cfg, false))
+      ARIES_REGISTER_OPTION("nginx-https", nginx_conf(cfg, true))
 
       po::notify(vm);
     } catch (po::error &e) {

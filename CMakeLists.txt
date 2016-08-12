@@ -19,6 +19,8 @@ file(GLOB TEST_SRCS
 # MESSAGE(STATUS "${LIB_SRCS}")
 # MESSAGE(STATUS "${TEST_SRCS}")
 
+find_package(mstch REQUIRED)
+
 set(LIB_LINKS
   pthread
   jemalloc
@@ -35,9 +37,14 @@ set(LIB_LINKS
   boost_log_setup
   boost_date_time
 
-  fruit
   aries
 )
+
+set(LIB_INS
+  libmstch.a
+  libfruit.a
+)
+
 
 #-------boost--------------------------
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
@@ -53,7 +60,7 @@ set_target_properties(aries PROPERTIES VERSION 1.0 SOVERSION 1)
 add_executable(demo src/main.cpp)
 target_compile_features(demo PRIVATE cxx_range_for)
 
-target_link_libraries(demo ${LIB_LINKS})
+target_link_libraries(demo ${LIB_LINKS} ${LIB_INS})
 set_target_properties(demo PROPERTIES OUTPUT_NAME aries)
 
 #--------install-----------------------
@@ -85,6 +92,6 @@ enable_testing()
 find_package(GTest REQUIRED)
 add_executable(unit_tests ${TEST_SRCS})
 target_compile_features(unit_tests PRIVATE cxx_range_for)
-target_link_libraries(unit_tests ${LIB_LINKS} GTest::GTest GTest::Main)
+target_link_libraries(unit_tests ${LIB_LINKS} ${LIB_INS} GTest::GTest GTest::Main)
 
 add_test(runUnitTests unit_tests)

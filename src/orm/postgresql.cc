@@ -99,17 +99,6 @@ void PostgreSql::parse(PGresult *res, std::vector<const char *> &val) {
       val.push_back(PQgetvalue(res, i, j));
     }
   }
-  // std::cout << "COL: ";
-  // for (int i = 0; i < cols; i++) {
-  //   std::cout << PQfname(res, i) << " ";
-  // }
-  // std::cout << std::endl;
-  // for (int i = 0; i < rows; i++) {
-  //   for (int j = 0; j < cols; j++) {
-  //     std::cout << "ROW " << PQgetvalue(res, i, j);
-  //   }
-  //   std::cout << std::endl;
-  // }
 }
 }
 }
