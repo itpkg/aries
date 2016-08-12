@@ -12,6 +12,22 @@
 namespace aries {
 namespace console {
 
+void start(std::string file, int port, int jobs) {
+  auto cfg = readConfig(file);
+  BOOST_LOG_TRIVIAL(info)
+      << "begin to start server, use --help to see more options.";
+  if (jobs > 0) {
+    BOOST_LOG_TRIVIAL(info) << jobs << " background job workers.";
+    // TODO
+  }
+  if (port > 0) {
+    BOOST_LOG_TRIVIAL(info) << "web service at: http://localhost:" << port;
+    web::Server srv;
+    srv.start(port, cfg["http"]["threads"].as<int>());
+  }
+  BOOST_LOG_TRIVIAL(info) << "done.";
+}
+
 void nginx_conf(std::string file, bool ssl) {
   auto cfg = readConfig(file);
   const std::string name = "nginx.conf";

@@ -37,17 +37,20 @@ int main(int argc, char **argv) {
     std::string appName = boost::filesystem::basename(argv[0]);
     init(appName);
 
+    int port;
+    int jobs;
+
     po::options_description nginx("Nginx files");
     nginx.add_options()("nginx-http", "generate nginx.config(http).")(
         "nginx-https", "generate nginx.config(https).");
 
     po::options_description server("Server options");
 
-    server.add_options()("port,p", po::value<uint>()->default_value(8080),
-                         "[TODO] start web server if > 0.")(
-        "jobs,j", po::value<uint>()->default_value(4),
-        "[TODO] start N worker jobs at once if > 0.")("daemon,D",
-                                                      "[TODO] daemon mode.");
+    server.add_options()("port,p", po::value<int>(&port)->default_value(8080),
+                         "start web server if > 0.")(
+        "jobs,j", po::value<int>(&jobs)->default_value(2),
+        "start N worker jobs at once if > 0.")("daemon,D",
+                                               "[TODO] daemon mode.");
 
     po::options_description config("Config files operations");
     config.add_options()("init,i", "generate config files if not exists.");
@@ -96,16 +99,15 @@ int main(int argc, char **argv) {
 
       po::notify(vm);
     } catch (po::error &e) {
-      std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
-      std::cerr << desc << std::endl;
+      BOOST_LOG_TRIVIAL(fatal) << e.what();
       return EXIT_FAILURE;
     }
 
-    console::show_help(appName, desc);
+    console::start(cfg, port, jobs);
+    return EXIT_SUCCESS;
 
   } catch (std::exception &e) {
-    std::cerr << "Unhandled exception: " << e.what()
-              << ", application will now exit." << std::endl;
+    BOOST_LOG_TRIVIAL(fatal) << e.what();
     return EXIT_FAILURE;
   }
 

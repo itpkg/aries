@@ -3,6 +3,7 @@
 #include "../cache/cache.hpp"
 #include "../orm/database.hpp"
 #include "router.hpp"
+#include "server.hpp"
 
 #include <boost/log/trivial.hpp>
 #include <map>

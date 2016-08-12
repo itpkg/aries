@@ -25,6 +25,8 @@ void cache_console(std::string cfg);
 void cache_clear(std::string cfg);
 void nginx_conf(std::string cfg, bool ssl);
 
+void start(std::string cfg, int port, int jobs);
+
 YAML::Node readConfig(std::string file);
 orm::DB *openDB(std::string file);
 cache::Cache *openCache(std::string file);

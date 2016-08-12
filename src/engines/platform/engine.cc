@@ -25,6 +25,7 @@ YAML::Node Engine::config() {
   std::string secret(buf.begin(), buf.end());
   node["http"]["host"] = "localhost";
   node["http"]["port"] = 8080;
+  node["http"]["threads"] = 4;
   node["http"]["ssl"] = false;
   node["secret"] = utils::to_base64(secret);
 

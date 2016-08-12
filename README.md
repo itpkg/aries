@@ -4,29 +4,6 @@ A web framework for C++ language.
 
 ## Usage(test in archlinux)
 
-### [cpp-netlib](http://cpp-netlib.org/index.html)
-```
-git clone https://github.com/cpp-netlib/cpp-netlib.git
-cd cpp-netlib
-git submodule init
-git submodule update
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCPP-NETLIB_BUILD_TESTS=OFF -DCPP-NETLIB_BUILD_EXAMPLES=OFF -DCPP-NETLIB_BUILD_SHARED_LIB
-S=OFF  -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_INSTALL_PREFIX=/usr ..
-sudo make install
-```
-
-```
-git clone https://github.com/cpp-netlib/uri.git
-git submodule init
-git submodule update
-cd uri
-mkdir build
-cd build
-cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
-```
-
 ### [fruit](https://github.com/google/fruit.git).
 ```
 git clone https://github.com/google/fruit.git
@@ -71,7 +48,7 @@ make install/strip
 ```
 
 ## Atom editor plugins
-
+- language-gitignore
 - language-cmake
 - language-cpp14
 - language-mustache
@@ -88,12 +65,4 @@ make install/strip
 - <https://github.com/jbeder/yaml-cpp/>
 - <https://mustache.github.io/>
 - <https://github.com/google/googletest>
-
-- <https://github.com/gflags/gflags>
-- <https://github.com/google/re2>
-- <https://github.com/google/flatbuffers>
-- <https://github.com/google/glog>
-
-- <https://github.com/dropbox/json11>
-- <https://github.com/facebook/proxygen>
-- <https://github.com/facebook/folly>
+- <https://github.com/nghttp2/nghttp2>
