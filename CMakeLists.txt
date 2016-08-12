@@ -16,10 +16,14 @@ file(GLOB TEST_SRCS
   "src/**/**/*_test.cpp"
 )
 
+find_package(Boost 1.60 REQUIRED)
+find_package(cppnetlib 0.12 REQUIRED)
+find_package(mstch REQUIRED)
+
+
 # MESSAGE(STATUS "${LIB_SRCS}")
 # MESSAGE(STATUS "${TEST_SRCS}")
 
-find_package(mstch REQUIRED)
 
 set(LIB_LINKS
   pthread
@@ -36,6 +40,7 @@ set(LIB_LINKS
   boost_thread
   boost_log_setup
   boost_date_time
+  ${CPPNETLIB_LIBRARIES}
 
   aries
 )

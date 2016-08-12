@@ -28,7 +28,7 @@ void nginx_conf(std::string file, bool ssl) {
     throw std::invalid_argument("file already exists");
   }
   std::ofstream fout(name);
-  fout << mstch::render(ARIES_NGINX_CONF, context) << std::endl;
+  fout << mstch::render(ARIES_NGINX_CONF, context);
   fout.close();
 }
 

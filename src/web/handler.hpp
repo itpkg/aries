@@ -2,8 +2,6 @@
 
 namespace aries {
 namespace web {
-class Handler {
-public:
-};
+struct Handler {};
 }
 }

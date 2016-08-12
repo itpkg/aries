@@ -4,6 +4,24 @@ A web framework for C++ language.
 
 ## Usage(test in archlinux)
 
+### [cpp-netlib](http://cpp-netlib.org/index.html)
+patch file to fix this[OPENSSL_NO_SSL3.patch](patchs/cpp-netlib-0.12.0-final/OPENSSL_NO_SSL3.patch):
+```
+/tmp/cpp-netlib-0.12.0-final/deps/asio/asio/include/asio/ssl/impl/context.ipp:88:31: error: no member named
+      'SSLv3_method' in the global namespace
+    handle_ = ::SSL_CTX_new(::SSLv3_method());
+                            ~~^
+/tmp/cpp-netlib-0.12.0-final/deps/asio/asio/include/asio/ssl/impl/context.ipp:91:31: error: no member named
+      'SSLv3_client_method' in the global namespace
+    handle_ = ::SSL_CTX_new(::SSLv3_client_method());
+                            ~~^
+/tmp/cpp-netlib-0.12.0-final/deps/asio/asio/include/asio/ssl/impl/context.ipp:94:31: error: no member named
+      'SSLv3_server_method' in the global namespace
+    handle_ = ::SSL_CTX_new(::SSLv3_server_method());
+                            ~~^
+3 errors generated.
+```
+
 ### [fruit](https://github.com/google/fruit.git).
 ```
 git clone https://github.com/google/fruit.git
