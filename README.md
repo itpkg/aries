@@ -5,21 +5,26 @@ A web framework for C++ language.
 ## Usage(test in archlinux)
 
 ### [cpp-netlib](http://cpp-netlib.org/index.html)
-patch file to fix this[OPENSSL_NO_SSL3.patch](patchs/cpp-netlib-0.12.0-final/OPENSSL_NO_SSL3.patch):
 ```
-/tmp/cpp-netlib-0.12.0-final/deps/asio/asio/include/asio/ssl/impl/context.ipp:88:31: error: no member named
-      'SSLv3_method' in the global namespace
-    handle_ = ::SSL_CTX_new(::SSLv3_method());
-                            ~~^
-/tmp/cpp-netlib-0.12.0-final/deps/asio/asio/include/asio/ssl/impl/context.ipp:91:31: error: no member named
-      'SSLv3_client_method' in the global namespace
-    handle_ = ::SSL_CTX_new(::SSLv3_client_method());
-                            ~~^
-/tmp/cpp-netlib-0.12.0-final/deps/asio/asio/include/asio/ssl/impl/context.ipp:94:31: error: no member named
-      'SSLv3_server_method' in the global namespace
-    handle_ = ::SSL_CTX_new(::SSLv3_server_method());
-                            ~~^
-3 errors generated.
+git clone https://github.com/cpp-netlib/cpp-netlib.git
+cd cpp-netlib
+git submodule init
+git submodule update
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCPP-NETLIB_BUILD_TESTS=OFF -DCPP-NETLIB_BUILD_EXAMPLES=OFF -DCPP-NETLIB_BUILD_SHARED_LIB
+S=OFF  -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_INSTALL_PREFIX=/usr ..
+sudo make install
+```
+
+```
+git clone https://github.com/cpp-netlib/uri.git
+git submodule init
+git submodule update
+cd uri
+mkdir build
+cd build
+cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
 ```
 
 ### [fruit](https://github.com/google/fruit.git).

@@ -20,10 +20,13 @@ find_package(Boost 1.60 REQUIRED)
 find_package(cppnetlib 0.12 REQUIRED)
 find_package(mstch REQUIRED)
 
+include_directories(
+  /usr/include/boost # fix cpp-netlib 0.12.0 bug
+)
 
 # MESSAGE(STATUS "${LIB_SRCS}")
 # MESSAGE(STATUS "${TEST_SRCS}")
-
+#MESSAGE(STATUS "")
 
 set(LIB_LINKS
   pthread
@@ -41,13 +44,14 @@ set(LIB_LINKS
   boost_log_setup
   boost_date_time
   ${CPPNETLIB_LIBRARIES}
-
+  
   aries
 )
 
 set(LIB_INS
   libmstch.a
   libfruit.a
+  ${CPPNETLIB_LIBRARIES}
 )
 
 
