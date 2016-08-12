@@ -4,6 +4,7 @@
 #include "resources.hpp"
 #include "utils.hpp"
 #include "web/engine.hpp"
+#include "web/microhttpd.hpp"
 
 #include <boost/filesystem/operations.hpp>
 #include <fstream>
@@ -22,8 +23,8 @@ void start(std::string file, int port, int jobs) {
   }
   if (port > 0) {
     BOOST_LOG_TRIVIAL(info) << "web service at: http://localhost:" << port;
-    web::Server srv;
-    srv.start(port, cfg["http"]["threads"].as<int>());
+    web::Server *srv = new web::MicroHttpd;
+    srv->start(port, cfg["http"]["threads"].as<int>());
   }
   BOOST_LOG_TRIVIAL(info) << "done.";
 }

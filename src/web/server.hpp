@@ -6,7 +6,7 @@ namespace aries {
 namespace web {
 class Server {
 public:
-  void start(int port, size_t threads);
+  virtual void start(int port, size_t threads) = 0;
 };
 }
 }

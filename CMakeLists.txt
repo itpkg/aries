@@ -17,12 +17,14 @@ file(GLOB TEST_SRCS
 )
 
 find_package(Boost 1.60 REQUIRED)
-find_package(cppnetlib 0.12 REQUIRED)
 find_package(mstch REQUIRED)
 
 
 # MESSAGE(STATUS "${LIB_SRCS}")
-# MESSAGE(STATUS "${TEST_SRCS}")
+
+# FIXME
+# find_package ( cppnetlib REQUIRED )
+# include_directories (${CPPNETLIB_INCLUDE_DIRS} )
 
 set(LIB_LINKS
   pthread
@@ -41,15 +43,15 @@ set(LIB_LINKS
   boost_thread
   boost_log_setup
   boost_date_time
-  nghttp2_asio
+  # ${CPPNETLIB_LIBRARIES}
 
+  microhttpd
+  fruit
   aries
 )
 
 set(LIB_INS
   libmstch.a
-  libfruit.a
-  ${CPPNETLIB_LIBRARIES}
 )
 
 

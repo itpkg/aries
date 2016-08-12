@@ -4,29 +4,6 @@ A web framework for C++ language.
 
 ## Usage(test in archlinux)
 
-### [fruit](https://github.com/google/fruit.git).
-```
-git clone https://github.com/google/fruit.git
-cd fruit
-mkdir build
-cd build
-cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
-make -j
-sudo make install
-```
-
-### [mstch](https://github.com/no1msd/mstch).
-```
-git clone https://github.com/no1msd/mstch.git
-cd mstch
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ..
-make -j
-sudo make install
-```
-
-
 ### Clone code and build
 
 ```
@@ -58,11 +35,12 @@ make install/strip
 - autosave(enable)
 - atom-beautify(beautify on save, clang-format)
 
-## Thanks
+## Dependencies
 
 - <https://google.github.io/styleguide/cppguide.html>
 - <https://github.com/google/fruit>
 - <https://github.com/jbeder/yaml-cpp/>
 - <https://mustache.github.io/>
 - <https://github.com/google/googletest>
-- <https://github.com/nghttp2/nghttp2>
+- <https://github.com/google/fruit.git>
+- <https://github.com/no1msd/mstch>
