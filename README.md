@@ -23,10 +23,13 @@ echo "export PATH=\$HOME/.cargo/bin:\$PATH" >> ~/.zshrc
 
 remember to enable autosave
 
-* atom-beautify
+* atom-beautify(beautify on save)
 * git-plus
 * language-rust
-* racer
+* [racer](https://github.com/phildawes/racer)
+* autosave(enable)
+* language-mustache
+* language-gitignore
 
 
 ## Build
