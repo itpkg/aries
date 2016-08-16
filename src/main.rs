@@ -1,7 +1,10 @@
+#[macro_use]
+extern crate log;
+extern crate env_logger;
 extern crate getopts;
-
 use getopts::Options;
 use std::env;
+
 
 fn do_work(inp: &str, out: Option<String>) {
     println!("{}", inp);
@@ -17,6 +20,9 @@ fn print_usage(program: &str, opts: Options) {
 }
 
 fn main() {
+    env_logger::init().unwrap();
+    info!("starting up");
+
     let args: Vec<String> = env::args().collect();
     let program = args[0].clone();
 

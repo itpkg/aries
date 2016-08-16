@@ -37,6 +37,7 @@ remember to enable autosave
 ```
 cargo build --release
 strip target/release/aries
+RUST_LOG=info ./target/release/aries
 ```
 
 ## Notes

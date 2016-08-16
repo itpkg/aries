@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate log;
+
 pub mod cache;
 pub mod crypto;
 pub mod i18n;
