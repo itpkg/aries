@@ -22,9 +22,6 @@ find_package(mstch REQUIRED)
 
 # MESSAGE(STATUS "${LIB_SRCS}")
 
-# FIXME
-# find_package ( cppnetlib REQUIRED )
-# include_directories (${CPPNETLIB_INCLUDE_DIRS} )
 
 set(LIB_LINKS
   pthread
@@ -43,7 +40,6 @@ set(LIB_LINKS
   boost_thread
   boost_log_setup
   boost_date_time
-  # ${CPPNETLIB_LIBRARIES}
 
   microhttpd
   fruit
@@ -53,6 +49,9 @@ set(LIB_LINKS
 set(LIB_INS
   libmstch.a
 )
+#--------thirds------------------------
+include(ExternalProject)
+
 
 
 #-------boost--------------------------
