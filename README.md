@@ -57,3 +57,4 @@ find . -type f -name "*.rs" -exec rustfmt --write-mode replace {} \;
 - <https://github.com/hyperium/hyper>
 - <https://github.com/kud1ing/awesome-rust>
 - <https://kaisery.gitbooks.io/rust-book-chinese/content/>
+- <http://mustache.github.io/>
