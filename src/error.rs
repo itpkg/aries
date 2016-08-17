@@ -1,5 +1,6 @@
 extern crate postgres as pgsql;
 extern crate toml;
+extern crate hyper;
 
 use std::{io, num, result, fmt, error};
 
@@ -14,6 +15,7 @@ pub enum Error {
     Parse(num::ParseIntError),
     PgConn(pgsql::error::ConnectError),
     Pg(pgsql::error::Error),
+    Hyper(hyper::Error),
 }
 
 impl fmt::Display for Error {
@@ -26,6 +28,7 @@ impl fmt::Display for Error {
             Error::Parse(ref err) => err.fmt(f),
             Error::PgConn(ref err) => err.fmt(f),
             Error::Pg(ref err) => err.fmt(f),
+            Error::Hyper(ref err) => err.fmt(f),
         }
     }
 }
@@ -40,6 +43,7 @@ impl error::Error for Error {
             Error::Parse(ref err) => err.description(),
             Error::PgConn(ref err) => err.description(),
             Error::Pg(ref err) => err.description(),
+            Error::Hyper(ref err) => err.description(),
         }
     }
 
@@ -52,6 +56,7 @@ impl error::Error for Error {
             Error::Parse(ref err) => Some(err),
             Error::PgConn(ref err) => Some(err),
             Error::Pg(ref err) => Some(err),
+            Error::Hyper(ref err) => Some(err),
         }
     }
 }
@@ -92,5 +97,11 @@ impl From<toml::ParserError> for Error {
 impl From<toml::Error> for Error {
     fn from(err: toml::Error) -> Error {
         Error::Toml(err)
+    }
+}
+
+impl From<hyper::Error> for Error {
+    fn from(err: hyper::Error) -> Error {
+        Error::Hyper(err)
     }
 }
