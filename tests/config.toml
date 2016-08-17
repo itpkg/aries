@@ -1,0 +1,13 @@
+port = 8080
+[Httpd]
+    secret = "tercse"
+    port = 8080
+
+[Database]
+    secret = "tercse"
+    port = 5432
+
+[Redis]
+    secret = "tercse"
+    port = 6379
+    db = 2

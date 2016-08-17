@@ -2,6 +2,7 @@
 extern crate log;
 extern crate env_logger;
 extern crate getopts;
+extern crate rustc_serialize;
 use getopts::Options;
 use std::env;
 
