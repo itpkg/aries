@@ -1,10 +1,21 @@
 extern crate aries;
 
+use aries::config::Loader;
+
 #[test]
 fn test_config_toml() {
-    let cfg = aries::config::Configuration::from_toml("tests/config.toml")
-        .expect("open toml config fail");
+    let file = "tests/config.toml";
+    let name = "httpd";
+    let tmp = aries::config::Httpd {
+        port: 8080,
+        host: "localhost".to_string(),
+    };
+    aries::config::toml::Loader::write(file, name, tmp.clone());
+
+    let cfg = aries::config::toml::Loader::read(file, name, tmp.clone())
+        .expect("open toml config fail: ");
     println!("{:?}", cfg);
-    // assert_eq!(8080, cfg.int("http.port", 8088));
-    // assert_eq!(8088, cfg.int("http.port1", 8088));
+    assert_eq!(tmp.port, cfg.port);
+    std::fs::remove_file(file).expect("error on remove ");
+
 }
