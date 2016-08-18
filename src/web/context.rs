@@ -1,5 +1,7 @@
 extern crate hyper;
 
+use self::hyper::server::{Request, Response};
+
 pub enum METHOD {
     GET,
     POST,
@@ -10,6 +12,10 @@ pub enum METHOD {
 
 
 pub struct Context {
-    // request: hyper::server::Request,
-     //response: hyper::server::Response,
+}
+
+impl Context {
+    pub fn new(req: Request, res: Response) -> Context {
+        Context {}
+    }
 }
