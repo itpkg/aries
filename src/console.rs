@@ -3,25 +3,6 @@ extern crate docopt;
 
 use self::docopt::Docopt;
 
-const USAGE: &'static str = "
-A web application build by rust language.
-
-Usage:
-  aries server [--config=FILE --threads=NUM --daemon]
-  aries worker [--config=FILE --threads=NUM --daemon]
-  aries db (create|console|migrate|seeds|rollback|drop) [--config=FILE]
-  aries cache (console|clear) [--config=FILE]
-  aries [--help]
-  aries [--version]
-
-Options:
-  -h --help         Show help message.
-  -v --version      Show version.
-  -c --config=FILE  Config file's name [default: config.toml].
-  -t --threads=NUM  Num of threads to run [default: 4].
-  -d --daemon       Daemon mode.
-";
-
 #[derive(Debug, RustcDecodable)]
 struct Args {
     flag_help: bool,
@@ -43,13 +24,42 @@ struct Args {
 }
 
 pub fn run() {
-    let args: Args = Docopt::new(USAGE)
+    let usage = format!("
+{desc}
+
+Usage:
+  {name} server [--config=FILE --threads=NUM --daemon]
+  {name} worker [--config=FILE --threads=NUM --daemon]
+  {name} db (create|console|migrate|seeds|rollback|drop) [--config=FILE]
+  {name} cache (console|clear) [--config=FILE]
+  {name} [--help]
+  {name} [--version]
+
+Options:
+  -h --help         Show help message.
+  -v --version      Show version.
+  -c --config=FILE  Config file's name [default: config.toml].
+  -t --threads=NUM  Num of threads to run [default: 4].
+  -d --daemon       Daemon mode.
+    ",
+                        name = env!("CARGO_PKG_NAME"),
+                        desc = env!("CARGO_PKG_DESCRIPTION"));
+    let args: Args = Docopt::new(usage.clone())
         .and_then(|d| d.decode())
         .unwrap_or_else(|e| e.exit());
     debug!("args: {:?}", args);
-    if (args.flag_version) {
+    if args.flag_version {
         println!(env!("CARGO_PKG_VERSION"));
         return;
     }
-    println!("{}", USAGE);
+    if args.cmd_db {
+        // TODO
+    }
+    if args.cmd_worker {
+        // TODO
+    }
+    if args.cmd_server {
+        // TODO
+    }
+    println!("{}", usage.clone());
 }
