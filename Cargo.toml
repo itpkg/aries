@@ -19,7 +19,7 @@ rand = "0.3"
 uuid = {version = "0.2", features = ["v4"]}
 time = "0.1"
 regex = "0.1"
-getopts = "0.2"
+docopt = "0.6"
 rustc-serialize = "0.3"
 jwt = "0.4"
 toml = "0.2"
