@@ -39,5 +39,5 @@ pub trait Loader {
     fn read<'x>(&mut self, file: &'x str) -> Result<bool>;
     fn write<'x>(&self, file: &'x str) -> Result<bool>;
     fn get<T: Decodable>(&self, name: &'static str) -> Result<T>;
-    fn put<'x, T: Encodable>(&mut self, name: &'x str, t: T) -> Result<bool>;
+    fn set<'x, T: Encodable>(&mut self, name: &'x str, t: T) -> Result<bool>;
 }

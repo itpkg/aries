@@ -40,7 +40,7 @@ impl super::Loader for Loader {
 
     fn write<'x>(&self, file: &'x str) -> Result<bool> {
         info!("write config into file {}", file);
-        let mut fd = try!(OpenOptions::new().create(true).write(true).append(true).open(file));
+        let mut fd = try!(OpenOptions::new().create(true).write(true).open(file));
         try!(writeln!(fd, "{}", toml::Value::Table(self.root.clone()).to_string()));
         Ok(true)
     }
@@ -57,7 +57,7 @@ impl super::Loader for Loader {
         }
     }
 
-    fn put<'x, T: Encodable>(&mut self, name: &'x str, t: T) -> Result<bool> {
+    fn set<'x, T: Encodable>(&mut self, name: &'x str, t: T) -> Result<bool> {
         let mut enc = toml::Encoder::new();
         try!(t.encode(&mut enc));
         self.root.insert(name.to_string(), toml::Value::Table(enc.toml));

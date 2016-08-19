@@ -116,9 +116,9 @@ impl<'a, CL: Loader> Application<'a, CL> {
             db: 0,
         };
 
-        try!(self.loader.put("httpd", httpd));
-        try!(self.loader.put("db", db));
-        try!(self.loader.put("cache", cache));
+        try!(self.loader.set("httpd", httpd));
+        try!(self.loader.set("db", db));
+        try!(self.loader.set("cache", cache));
         // TODO load from engines
 
         try!(self.loader.write(file));
