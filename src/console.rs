@@ -2,6 +2,7 @@ extern crate rustc_serialize;
 extern crate docopt;
 
 use self::docopt::Docopt;
+use super::error::Result;
 
 #[derive(Debug, RustcDecodable)]
 pub struct Args {
@@ -32,11 +33,10 @@ pub struct Args {
 }
 
 impl Args {
-    pub fn new() -> Args {
-        let args: Args = Docopt::new(usage())
-            .and_then(|d| d.decode())
-            .unwrap_or_else(|e| e.exit());
-        args
+    pub fn new() -> Result<Args> {
+        let dec = try!(Docopt::new(usage()));
+        let args: Args = try!(dec.decode());
+        Ok(args)
     }
 }
 

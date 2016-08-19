@@ -19,7 +19,6 @@ fn main() {
 
     // let en: &Engine = &teamwork::Engine::new();
     // app.register(en);
-
-    let args = Args::new();
-    app.start(args);
+    let args = Args::new().unwrap();
+    app.start(args).unwrap();
 }

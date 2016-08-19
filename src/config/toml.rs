@@ -17,7 +17,7 @@ impl Loader {
     }
 }
 impl super::Loader for Loader {
-    fn read(&mut self, file: &'static str) -> Result<bool> {
+    fn read<'x>(&mut self, file: &'x str) -> Result<bool> {
         info!("read config from file {:?}", file);
 
         let mut cfg = try!(fs::File::open(file));

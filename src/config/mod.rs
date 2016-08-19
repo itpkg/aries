@@ -18,7 +18,7 @@ pub struct Cache {
     pub driver: String,
     pub prefix: String,
     pub host: String,
-    pub port: usize,
+    pub port: u32,
     pub db: u8,
 }
 
@@ -36,7 +36,7 @@ pub struct Database {
 
 
 pub trait Loader {
-    fn read(&mut self, file: &'static str) -> Result<bool>;
+    fn read<'x>(&mut self, file: &'x str) -> Result<bool>;
     fn write<'x>(&self, file: &'x str) -> Result<bool>;
     fn get<T: Decodable>(&self, name: &'static str) -> Result<T>;
     fn put<'x, T: Encodable>(&mut self, name: &'x str, t: T) -> Result<bool>;

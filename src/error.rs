@@ -3,6 +3,8 @@ extern crate toml;
 extern crate hyper;
 extern crate redis;
 extern crate rustc_serialize;
+extern crate docopt;
+extern crate mustache;
 
 use std::{io, num, result, fmt, error};
 use rustc_serialize::json;
@@ -22,6 +24,8 @@ pub enum Error {
     Redis(redis::RedisError),
     JsonDecoder(json::DecoderError),
     JsonEncoder(json::EncoderError),
+    Docopt(docopt::Error),
+    Mustache(mustache::Error),
 }
 
 impl fmt::Display for Error {
@@ -38,6 +42,8 @@ impl fmt::Display for Error {
             Error::Redis(ref err) => err.fmt(f),
             Error::JsonDecoder(ref err) => err.fmt(f),
             Error::JsonEncoder(ref err) => err.fmt(f),
+            Error::Docopt(ref err) => err.fmt(f),
+            Error::Mustache(ref err) => err.fmt(f),
         }
     }
 }
@@ -56,6 +62,8 @@ impl error::Error for Error {
             Error::Redis(ref err) => err.description(),
             Error::JsonDecoder(ref err) => err.description(),
             Error::JsonEncoder(ref err) => err.description(),
+            Error::Docopt(ref err) => err.description(),
+            Error::Mustache(ref err) => err.description(),
         }
     }
 
@@ -72,6 +80,8 @@ impl error::Error for Error {
             Error::Redis(ref err) => Some(err),
             Error::JsonDecoder(ref err) => Some(err),
             Error::JsonEncoder(ref err) => Some(err),
+            Error::Docopt(ref err) => Some(err),
+            Error::Mustache(ref err) => Some(err),
         }
     }
 }
@@ -137,5 +147,19 @@ impl From<json::DecoderError> for Error {
 impl From<json::EncoderError> for Error {
     fn from(err: json::EncoderError) -> Error {
         Error::JsonEncoder(err)
+    }
+}
+
+
+impl From<docopt::Error> for Error {
+    fn from(err: docopt::Error) -> Error {
+        Error::Docopt(err)
+    }
+}
+
+
+impl From<mustache::Error> for Error {
+    fn from(err: mustache::Error) -> Error {
+        Error::Mustache(err)
     }
 }

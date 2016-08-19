@@ -7,13 +7,13 @@ use rustc_serialize::{Decodable, Encodable};
 use rustc_serialize::json::{self, ToJson, EncoderError, DecodeResult};
 
 
-pub struct Cache {
+pub struct Cache<'a> {
     client: redis::Client,
-    prefix: &'static str,
+    prefix: &'a str,
 }
 
-impl Cache {
-    pub fn new(prefix: &'static str, host: &'static str, port: usize, db: u8) -> Result<Cache> {
+impl<'a> Cache<'a> {
+    pub fn new(prefix: &'a str, host: &'a str, port: u32, db: u8) -> Result<Cache<'a>> {
         let url = &format!("redis://{}:{}/{}", host, port, db);
         let cli = try!(redis::Client::open(try!(url.into_connection_info())));
         Ok(Cache {
@@ -27,7 +27,7 @@ impl Cache {
     }
 }
 
-impl super::Cache for Cache {
+impl<'a> super::Cache for Cache<'a> {
     fn get<T: Decodable>(&self, key: &'static str) -> Result<T> {
         let con = try!(self.client.get_connection());
         let rst: RedisResult<String> = con.get(self.key(key));
@@ -51,8 +51,9 @@ impl super::Cache for Cache {
     }
     fn clear(&self) -> Result<String> {
         let con = try!(self.client.get_connection());
-        for k in self.keys() {
-            let rst: RedisResult<usize> = con.del(k);
+        let keys = try!(self.keys());
+        if !keys.is_empty() {
+            let rst: RedisResult<usize> = con.del(keys);
             try!(rst);
         }
         Ok("ok".to_string())

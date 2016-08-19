@@ -2,14 +2,16 @@
 extern crate mustache;
 
 use rustc_serialize::{Decodable, Encodable};
-use std::{path, env, any};
+use std::{path, env, any, io, process};
 use std::fs::OpenOptions;
 use std::collections::HashMap;
 use std::cell::RefCell;
 
 use super::config::{self, Loader};
+use super::cache::{self, Cache};
 use super::console;
 use super::web::engine::Engine;
+use super::error::Result;
 
 pub struct Application<'a, CL: Loader> {
     engines: RefCell<Vec<&'a Engine>>,
@@ -30,64 +32,55 @@ impl<'a, CL: Loader> Application<'a, CL> {
         self.engines.borrow_mut().push(en);
     }
 
-    pub fn start(&mut self, args: console::Args) {
+    pub fn start(&mut self, args: console::Args) -> Result<bool> {
         debug!("{:?}", args);
         if args.flag_version {
             println!("{}", self.version());
-            return;
+            return Ok(true);
         }
         if args.cmd_init {
-            self.init(&args.flag_config);
-            return;
+            return self.init(&args.flag_config);
         }
         if args.cmd_db {
             if args.cmd_console {
-                self.db_console(&args.flag_config);
-                return;
+                return self.db_console(&args.flag_config);
             }
             if args.cmd_create {
-                self.db_create(&args.flag_config);
-                return;
+                return self.db_create(&args.flag_config);
             }
             if args.cmd_migrate {
-                self.db_migrate(&args.flag_config);
-                return;
+                return self.db_migrate(&args.flag_config);
             }
             if args.cmd_rollback {
-                self.db_rollback(&args.flag_config);
-                return;
+                return self.db_rollback(&args.flag_config);
             }
             if args.cmd_drop {
-                self.db_drop(&args.flag_config);
-                return;
+                return self.db_drop(&args.flag_config);
             }
         }
         if args.cmd_cache {
             if args.cmd_console {
-                self.cache_console(&args.flag_config);
-                return;
+                return self.cache_console(&args.flag_config);
             }
             if args.cmd_clear {
-                self.cache_clear(&args.flag_config);
-                return;
+                return self.cache_clear(&args.flag_config);
             }
         }
         if args.cmd_nginx {
-            self.nginx(&args.flag_domain, args.flag_port, args.flag_https);
-            return;
+            return self.nginx(&args.flag_domain, args.flag_port, args.flag_https);
         }
         if args.cmd_worker {
-            self.worker(&args.flag_config, args.flag_threads, args.flag_daemon);
-            return;
+            return self.worker(&args.flag_config, args.flag_threads, args.flag_daemon);
         }
         if args.cmd_server {
-            self.server(&args.flag_config,
-                        args.flag_port,
-                        args.flag_threads,
-                        args.flag_daemon);
-            return;
+            return self.server(&args.flag_config,
+                               args.flag_port,
+                               args.flag_threads,
+                               args.flag_daemon);
+
         }
         println!("{}", console::usage());
+        Ok(true)
     }
 }
 
@@ -96,10 +89,10 @@ impl<'a, CL: Loader> Application<'a, CL> {
         format!("v{}", env!("CARGO_PKG_VERSION"))
     }
 
-    fn init<'x>(&mut self, file: &'x str) {
+    fn init<'x>(&mut self, file: &'x str) -> Result<bool> {
         if path::Path::new(file).exists() {
             error!("file {} already exists.", file);
-            return;
+            return Ok(false);
         }
         let db = config::Database {
             driver: "postgresql".to_string(),
@@ -123,62 +116,86 @@ impl<'a, CL: Loader> Application<'a, CL> {
             db: 0,
         };
 
-        self.loader.put("httpd", httpd).unwrap();
-        self.loader.put("db", db).unwrap();
-        self.loader.put("cache", cache).unwrap();
-        self.loader.write(file).unwrap();
+        try!(self.loader.put("httpd", httpd));
+        try!(self.loader.put("db", db));
+        try!(self.loader.put("cache", cache));
+        // TODO load from engines
 
-        // match self.loader.write(file, "httpd", httpd) {
-        //     Some(e) => error!("{:?}", e),
-        //     None => {}
-        // };
-        // match self.loader.write(file, "database", db) {
-        //     Some(e) => error!("{:?}", e),
-        //     None => {}
-        // };
-        // match self.loader.write(file, "cache", cache) {
-        //     Some(e) => error!("{:?}", e),
-        //     None => {}
-        // };
+        try!(self.loader.write(file));
         info!("done.");
+        Ok(true)
     }
 
-    fn db_console<'x>(&self, _: &'x str) {
+    fn db_console<'x>(&self, _: &'x str) -> Result<bool> {
         // TODO
+        Ok(true)
     }
-    fn db_create<'x>(&self, _: &'x str) {
+    fn db_create<'x>(&self, _: &'x str) -> Result<bool> {
         // TODO
+        Ok(true)
     }
-    fn db_migrate<'x>(&self, _: &'x str) {
+    fn db_migrate<'x>(&self, _: &'x str) -> Result<bool> {
         // TODO
+        Ok(true)
     }
-    fn db_rollback<'x>(&self, _: &'x str) {
+    fn db_rollback<'x>(&self, _: &'x str) -> Result<bool> {
         // TODO
+        Ok(true)
     }
-    fn db_drop<'x>(&self, _: &'x str) {
+    fn db_drop<'x>(&self, _: &'x str) -> Result<bool> {
         // TODO
+        Ok(true)
     }
-    fn cache_clear<'x>(&self, _: &'x str) {
-        // TODO
+    fn cache_clear<'x>(&mut self, file: &'x str) -> Result<bool> {
+        try!(self.loader.read(file));
+        let ch: config::Cache = try!(self.loader.get("cache"));
+        info!("connect to cache server");
+        if ch.driver == "redis" {
+            let c = try!(cache::redis::Cache::new(&ch.prefix, &ch.host, ch.port, ch.db));
+            try!(c.clear());
+            Ok(true)
+        } else {
+            error!("unsupported cache driver {}", ch.driver);
+            Ok(false)
+        }
     }
-    fn cache_console<'x>(&self, _: &'x str) {
-        // TODO
+    fn cache_console<'x>(&mut self, file: &'x str) -> Result<bool> {
+        try!(self.loader.read(file));
+        let ch: config::Cache = try!(self.loader.get("cache"));
+        info!("connect to cache server");
+        if ch.driver == "redis" {
+            try!(process::Command::new("redis-cli")
+                .arg("-h")
+                .arg(ch.host)
+                .arg("-p")
+                .arg(ch.port.to_string())
+                .arg("-n")
+                .arg(ch.db.to_string())
+                .status());
+            Ok(true)
+        } else {
+            error!("unsupported cache driver {}", ch.driver);
+            Ok(false)
+        }
+
     }
-    fn server<'x>(&self, _: &'x str, _: usize, _: usize, _: bool) {
+    fn server<'x>(&self, _: &'x str, _: usize, _: usize, _: bool) -> Result<bool> {
         // TODO
+        Ok(true)
     }
-    fn worker<'x>(&self, _: &'x str, _: usize, _: bool) {
+    fn worker<'x>(&self, _: &'x str, _: usize, _: bool) -> Result<bool> {
         // TODO
+        Ok(true)
     }
 
-    fn nginx<'x>(&self, domain: &'x str, port: usize, ssl: bool) {
+    fn nginx<'x>(&self, domain: &'x str, port: usize, ssl: bool) -> Result<bool> {
         let name = "nginx.conf";
         if path::Path::new(name).exists() {
             error!("file {} already exists.", name);
-            return;
+            return Ok(false);
         }
 
-        let tpl = mustache::compile_str(r#"
+        let tpl = try!(mustache::compile_str(r#"
   upstream {{host}}_prod {
     server localhost:{{port}} fail_timeout=0;
   }
@@ -250,8 +267,7 @@ impl<'a, CL: Loader> Application<'a, CL> {
     }
 
   }
-"#)
-            .unwrap();
+"#));
         let data = mustache::MapBuilder::new()
             .insert_str("root",
                         env::current_dir()
@@ -264,9 +280,9 @@ impl<'a, CL: Loader> Application<'a, CL> {
             .expect("Failed to encode port")
             .build();
 
-        tpl.render_data(&mut OpenOptions::new().create(true).write(true).open(name).unwrap(),
-                         &data)
-            .unwrap();
+        try!(tpl.render_data(&mut try!(OpenOptions::new().create(true).write(true).open(name)),
+                             &data));
         info!("done.");
+        Ok(true)
     }
 }
