@@ -3,14 +3,13 @@ extern crate log;
 extern crate env_logger;
 extern crate rustc_serialize;
 
-// use std::env;
-// use super::app;
-
 extern crate aries;
 
 
 fn main() {
     env_logger::init().unwrap();
     info!("starting up");
-    aries::console::run();
+    let app = aries::app::Application::new();
+    let args = aries::console::Args::new();
+    app.start(args);
 }

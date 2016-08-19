@@ -15,15 +15,15 @@ impl Handler for HandlerImpl1 {
     }
 }
 
-// #[derive(Debug)]
-// struct HandlerImpl2 {
-//     i2: i32,
-// }
-// impl Handler for HandlerImpl2 {
-//     fn add(&self) -> Box<Fn(i32, i32) -> i32> {
-//         Box::new(move |x, y| x + y + 5)
-//     }
-// }
+#[derive(Debug)]
+struct HandlerImpl2 {
+    i2: i32,
+}
+impl Handler for HandlerImpl2 {
+    fn add(&self) -> Box<Fn(i32, i32) -> i32> {
+        Box::new(move |x, y| x + y + 5)
+    }
+}
 
 type HandlerType = fn(i32, i32) -> i32;
 
@@ -38,5 +38,8 @@ fn test_demo_1() {
     assert_eq!(2, tmp(1, 1));
     let tmp = hnd.add();
     assert_eq!(5, tmp(1, 2));
+
+    let tmp: &Handler = &HandlerImpl2 { i2: 3 };
+    assert_eq!(7, tmp.add()(1, 1));
 
 }

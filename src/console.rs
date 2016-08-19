@@ -4,91 +4,67 @@ extern crate docopt;
 use self::docopt::Docopt;
 
 #[derive(Debug, RustcDecodable)]
-struct Args {
-    flag_help: bool,
-    flag_version: bool,
-    flag_config: String,
-    flag_threads: usize,
-    flag_daemon: bool,
-    flag_https: bool,
+pub struct Args {
+    pub flag_help: bool,
+    pub flag_version: bool,
+    pub flag_config: String,
+    pub flag_threads: usize,
+    pub flag_port: usize,
+    pub flag_domain: String,
+    pub flag_daemon: bool,
+    pub flag_https: bool,
 
-    cmd_init: bool,
-    cmd_server: bool,
-    cmd_worker: bool,
-    cmd_db: bool,
-    cmd_cache: bool,
-    cmd_nginx: bool,
+    pub cmd_init: bool,
+    pub cmd_server: bool,
+    pub cmd_worker: bool,
+    pub cmd_db: bool,
+    pub cmd_cache: bool,
+    pub cmd_nginx: bool,
 
-    cmd_console: bool,
-    cmd_create: bool,
-    cmd_migrate: bool,
-    cmd_seeds: bool,
-    cmd_rollback: bool,
-    cmd_drop: bool,
+    pub cmd_console: bool,
+    pub cmd_create: bool,
+    pub cmd_migrate: bool,
+    pub cmd_seeds: bool,
+    pub cmd_rollback: bool,
+    pub cmd_drop: bool,
 
-    cmd_clear: bool,
+    pub cmd_clear: bool,
 }
 
-pub fn run() {
-    let app = super::app::Application::new();
-    let args: Args = Docopt::new(app.usage())
-        .and_then(|d| d.decode())
-        .unwrap_or_else(|e| e.exit());
-    debug!("{:?}", args);
-    if args.flag_version {
-        println!("{}", app.version());
-        return;
+impl Args {
+    pub fn new() -> Args {
+        let args: Args = Docopt::new(usage())
+            .and_then(|d| d.decode())
+            .unwrap_or_else(|e| e.exit());
+        args
     }
-    if args.cmd_init {
-        app.init(&args.flag_config);
-        return;
-    }
-    if args.cmd_db {
-        if args.cmd_console {
-            // TODO
-            return;
-        }
-        if args.cmd_create {
-            // TODO
-            return;
-        }
-        if args.cmd_migrate {
-            // TODO
-            return;
-        }
-        if args.cmd_rollback {
-            // TODO
-            return;
-        }
-        if args.cmd_drop {
-            // TODO
-            return;
-        }
-    }
-    if args.cmd_cache {
-        if args.cmd_console {
-            // TODO
-            return;
-        }
-        if args.cmd_clear {
-            // TODO
-            return;
-        }
-    }
-    if args.cmd_nginx {
-        if args.flag_https {
-            // TODO
-        }
-        // TODO
-        return;
-    }
-    if args.cmd_worker {
-        // TODO
-        return;
-    }
-    if args.cmd_server {
-        // TODO
-        return;
-    }
-    println!("{}", app.usage());
+}
+
+// -----------------------------------------------------------------------------
+pub fn usage() -> String {
+    format!("
+{desc}
+
+Usage:
+  {name} init [--config=FILE]
+  {name} server [--port=PORT --config=FILE --threads=NUM --daemon]
+  {name} worker [--config=FILE --threads=NUM --daemon]
+  {name} db (create|console|migrate|seeds|rollback|drop) [--config=FILE]
+  {name} cache (console|clear) [--config=FILE]
+  {name} nginx [--https --port=PORT --domain=NAME]
+  {name} [--help]
+  {name} [--version]
+
+Options:
+  -h --help         Show help message.
+  -v --version      Show version.
+  -c --config=FILE  Config file's name [default: config.toml].
+  -p --port=PORT     Port to listen [default: 8080].
+  -t --threads=NUM  Num of threads to run [default: 4].
+  --https           With https support.
+  --domain=NAME     Domain name [default: www.change-me.com].
+  -d --daemon       Daemon mode.
+    ",
+            name = env!("CARGO_PKG_NAME"),
+            desc = env!("CARGO_PKG_DESCRIPTION"))
 }

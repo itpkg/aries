@@ -1,6 +1,7 @@
 
 use std::path;
 use super::config;
+use super::console;
 use super::config::Loader;
 
 pub struct Application {
@@ -14,37 +15,70 @@ impl Application {
 }
 
 impl Application {
-    pub fn usage(&self) -> String {
-        format!("
-    {desc}
-
-    Usage:
-      {name} init [--config=FILE]
-      {name} server [--config=FILE --threads=NUM --daemon]
-      {name} worker [--config=FILE --threads=NUM --daemon]
-      {name} db (create|console|migrate|seeds|rollback|drop) [--config=FILE]
-      {name} cache (console|clear) [--config=FILE]
-      {name} nginx [--https]
-      {name} [--help]
-      {name} [--version]
-
-    Options:
-      -h --help         Show help message.
-      -v --version      Show version.
-      -c --config=FILE  Config file's name [default: config.toml].
-      -t --threads=NUM  Num of threads to run [default: 4].
-      --https           With https support.
-      -d --daemon       Daemon mode.
-        ",
-                name = env!("CARGO_PKG_NAME"),
-                desc = env!("CARGO_PKG_DESCRIPTION"))
+    pub fn start(&self, args: console::Args) {
+        debug!("{:?}", args);
+        if args.flag_version {
+            println!("{}", self.version());
+            return;
+        }
+        if args.cmd_init {
+            self.init(&args.flag_config);
+            return;
+        }
+        if args.cmd_db {
+            if args.cmd_console {
+                // TODO
+                return;
+            }
+            if args.cmd_create {
+                // TODO
+                return;
+            }
+            if args.cmd_migrate {
+                // TODO
+                return;
+            }
+            if args.cmd_rollback {
+                // TODO
+                return;
+            }
+            if args.cmd_drop {
+                // TODO
+                return;
+            }
+        }
+        if args.cmd_cache {
+            if args.cmd_console {
+                // TODO
+                return;
+            }
+            if args.cmd_clear {
+                // TODO
+                return;
+            }
+        }
+        if args.cmd_nginx {
+            self.nginx(args.flag_https);
+            return;
+        }
+        if args.cmd_worker {
+            // TODO
+            return;
+        }
+        if args.cmd_server {
+            // TODO
+            return;
+        }
+        println!("{}", console::usage());
     }
+}
 
-    pub fn version(&self) -> String {
+impl Application {
+    fn version(&self) -> String {
         format!("v{}", env!("CARGO_PKG_VERSION"))
     }
 
-    pub fn init<'a>(&self, file: &'a str) {
+    fn init<'a>(&self, file: &'a str) {
         if path::Path::new(file).exists() {
             error!("file {} already exists.", file);
             return;
@@ -84,5 +118,11 @@ impl Application {
         };
     }
 
-    pub fn nginx(ssl: bool) {}
+    fn db_migrate<'a>(&self, file: &'a str) {
+        // TODO
+    }
+
+    fn nginx<'a>(&self, ssl: bool) {
+        // TODO
+    }
 }
