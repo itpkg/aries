@@ -7,6 +7,7 @@ fn test_config_toml() {
     let file = "tests/config.toml";
     let name = "httpd";
     let tmp = aries::config::Httpd {
+        secrets: "change-me".to_string(),
         port: 8080,
         host: "localhost".to_string(),
     };

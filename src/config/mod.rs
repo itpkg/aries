@@ -7,34 +7,35 @@ use super::error::{Result, Error};
 #[derive(Debug, Clone)]
 #[derive(RustcEncodable, RustcDecodable)]
 pub struct Httpd {
+    pub secrets: String,
     pub host: String,
     pub port: i32,
 }
 
 #[derive(Debug, Clone)]
 #[derive(RustcEncodable, RustcDecodable)]
-pub struct Redis {
-    host: String,
-    port: i32,
-    db: i32,
+pub struct Cache {
+    pub driver: String,
+    pub prefix: String,
+    pub host: String,
+    pub port: i32,
+    pub db: i32,
 }
 
 #[derive(Debug, Clone)]
 #[derive(RustcEncodable, RustcDecodable)]
 pub struct Database {
-    host: String,
+    pub driver: String,
+    pub host: String,
     pub port: i32,
+    pub name: String,
+    pub user: String,
+    pub password: String,
+    pub extra: String,
 }
 
-#[derive(Debug, Clone)]
-#[derive(RustcEncodable, RustcDecodable)]
-pub struct Configuration {
-    httpd: Httpd,
-    database: Database,
-    redis: Redis,
-}
 
 pub trait Loader {
     fn read<T: Decodable>(file: &'static str, name: &'static str, t: T) -> Result<T>;
-    fn write<T: Encodable>(file: &'static str, name: &'static str, t: T) -> Option<Error>;
+    fn write<'a, 'b, T: Encodable>(file: &'a str, name: &'b str, t: T) -> Option<Error>;
 }

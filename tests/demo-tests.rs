@@ -15,15 +15,15 @@ impl Handler for HandlerImpl1 {
     }
 }
 
-#[derive(Debug)]
-struct HandlerImpl2 {
-    i2: i32,
-}
-impl Handler for HandlerImpl2 {
-    fn add(&self) -> Box<Fn(i32, i32) -> i32> {
-        Box::new(move |x, y| x + y + 5)
-    }
-}
+// #[derive(Debug)]
+// struct HandlerImpl2 {
+//     i2: i32,
+// }
+// impl Handler for HandlerImpl2 {
+//     fn add(&self) -> Box<Fn(i32, i32) -> i32> {
+//         Box::new(move |x, y| x + y + 5)
+//     }
+// }
 
 type HandlerType = fn(i32, i32) -> i32;
 

@@ -38,8 +38,8 @@ impl super::Loader for Loader {
         }
     }
 
-    fn write<T: Encodable>(file: &'static str, name: &'static str, t: T) -> Option<Error> {
-        info!("write config to file {:?}", file);
+    fn write<'a, 'b, T: Encodable>(file: &'a str, name: &'b str, t: T) -> Option<Error> {
+        info!("write item [{}] into file {}", name, file);
         let mut enc = toml::Encoder::new();
         match t.encode(&mut enc) {
             Ok(_) => {
