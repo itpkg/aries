@@ -27,7 +27,7 @@ log = "0.3"
 env_logger = "0.3"
 
 hyper = "0.9"
-mustache = "0.7"
+mustache = {git = "https://github.com/nickel-org/rust-mustache.git"}
 rust-crypto = "0.2"
 
 postgres = "0.11"
