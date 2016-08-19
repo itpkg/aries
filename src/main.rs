@@ -6,13 +6,16 @@ extern crate aries;
 
 use self::aries::app::Application;
 use self::aries::console::Args;
-use self::aries::engines::teamwork;
-use self::aries::web::engine::Engine;
+use self::aries::config;
+
+// use self::aries::web::engine::Engine;
+// use self::aries::engines::teamwork;
+
 
 fn main() {
     env_logger::init().unwrap();
     info!("starting up");
-    let app = &Application::new();
+    let mut app = Application::new(config::toml::Loader::new());
 
     // let en: &Engine = &teamwork::Engine::new();
     // app.register(en);

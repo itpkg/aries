@@ -2,7 +2,7 @@ pub mod toml;
 
 use rustc_serialize::{Decodable, Encodable};
 
-use super::error::{Result, Error};
+use super::error::Result;
 
 #[derive(Debug, Clone)]
 #[derive(RustcEncodable, RustcDecodable)]
@@ -36,6 +36,8 @@ pub struct Database {
 
 
 pub trait Loader {
-    fn read<T: Decodable>(file: &'static str, name: &'static str, t: T) -> Result<T>;
-    fn write<'a, 'b, T: Encodable>(file: &'a str, name: &'b str, t: T) -> Option<Error>;
+    fn read(&mut self, file: &'static str) -> Result<bool>;
+    fn write<'x>(&self, file: &'x str) -> Result<bool>;
+    fn get<T: Decodable>(&self, name: &'static str) -> Result<T>;
+    fn put<'x, T: Encodable>(&mut self, name: &'x str, t: T) -> Result<bool>;
 }

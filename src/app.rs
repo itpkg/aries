@@ -1,32 +1,36 @@
 
 extern crate mustache;
 
-use std::{path, env};
+use rustc_serialize::{Decodable, Encodable};
+use std::{path, env, any};
 use std::fs::OpenOptions;
 use std::collections::HashMap;
 use std::cell::RefCell;
 
-use super::config;
+use super::config::{self, Loader};
 use super::console;
-use super::config::Loader;
 use super::web::engine::Engine;
 
-pub struct Application<'a> {
+pub struct Application<'a, CL: Loader> {
     engines: RefCell<Vec<&'a Engine>>,
+    loader: CL,
 }
 
-impl<'a> Application<'a> {
-    pub fn new() -> Application<'a> {
-        Application { engines: RefCell::new(Vec::new()) }
+impl<'a, CL: Loader> Application<'a, CL> {
+    pub fn new(loader: CL) -> Application<'a, CL> {
+        Application {
+            engines: RefCell::new(Vec::new()),
+            loader: loader,
+        }
     }
 }
 
-impl<'a> Application<'a> {
+impl<'a, CL: Loader> Application<'a, CL> {
     pub fn register(&self, en: &'a Engine) {
         self.engines.borrow_mut().push(en);
     }
 
-    pub fn start(&self, args: console::Args) {
+    pub fn start(&mut self, args: console::Args) {
         debug!("{:?}", args);
         if args.flag_version {
             println!("{}", self.version());
@@ -87,12 +91,12 @@ impl<'a> Application<'a> {
     }
 }
 
-impl<'a> Application<'a> {
+impl<'a, CL: Loader> Application<'a, CL> {
     fn version(&self) -> String {
         format!("v{}", env!("CARGO_PKG_VERSION"))
     }
 
-    fn init<'x>(&self, file: &'x str) {
+    fn init<'x>(&mut self, file: &'x str) {
         if path::Path::new(file).exists() {
             error!("file {} already exists.", file);
             return;
@@ -118,18 +122,24 @@ impl<'a> Application<'a> {
             port: 6379,
             db: 0,
         };
-        match config::toml::Loader::write(file, "httpd", httpd) {
-            Some(e) => error!("{:?}", e),
-            None => {}
-        };
-        match config::toml::Loader::write(file, "database", db) {
-            Some(e) => error!("{:?}", e),
-            None => {}
-        };
-        match config::toml::Loader::write(file, "cache", cache) {
-            Some(e) => error!("{:?}", e),
-            None => {}
-        };
+
+        self.loader.put("httpd", httpd).unwrap();
+        self.loader.put("db", db).unwrap();
+        self.loader.put("cache", cache).unwrap();
+        self.loader.write(file).unwrap();
+
+        // match self.loader.write(file, "httpd", httpd) {
+        //     Some(e) => error!("{:?}", e),
+        //     None => {}
+        // };
+        // match self.loader.write(file, "database", db) {
+        //     Some(e) => error!("{:?}", e),
+        //     None => {}
+        // };
+        // match self.loader.write(file, "cache", cache) {
+        //     Some(e) => error!("{:?}", e),
+        //     None => {}
+        // };
         info!("done.");
     }
 

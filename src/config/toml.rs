@@ -9,10 +9,15 @@ use rustc_serialize::{Decodable, Encodable};
 use super::super::error::{Result, Error};
 
 pub struct Loader {
-
+    root: toml::Table,
+}
+impl Loader {
+    pub fn new() -> Loader {
+        Loader { root: toml::Table::new() }
+    }
 }
 impl super::Loader for Loader {
-    fn read<T: Decodable>(file: &'static str, name: &'static str, _: T) -> Result<T> {
+    fn read(&mut self, file: &'static str) -> Result<bool> {
         info!("read config from file {:?}", file);
 
         let mut cfg = try!(fs::File::open(file));
@@ -21,15 +26,10 @@ impl super::Loader for Loader {
         let mut parser = toml::Parser::new(&buf);
         match parser.parse() {
             Some(root) => {
-                match root.get(name) {
-                    Some(val) => {
-                        let val = val.clone();
-                        let mut dec = toml::Decoder::new(val);
-                        let cfg = try!(T::decode(&mut dec));
-                        Ok(cfg)
-                    }
-                    None => Err(Error::Io(io::Error::new(io::ErrorKind::InvalidData, ""))),
+                for (key, val) in root {
+                    self.root.insert(key, val);
                 }
+                Ok(true)
             }
             None => {
                 error!("bad toml format: {:?}", parser.errors);
@@ -38,25 +38,29 @@ impl super::Loader for Loader {
         }
     }
 
-    fn write<'a, 'b, T: Encodable>(file: &'a str, name: &'b str, t: T) -> Option<Error> {
-        info!("write item [{}] into file {}", name, file);
-        let mut enc = toml::Encoder::new();
-        match t.encode(&mut enc) {
-            Ok(_) => {
-                let mut root = toml::Table::new();
-                root.insert(name.to_string(), toml::Value::Table(enc.toml));
-                match OpenOptions::new().create(true).write(true).append(true).open(file) {
-                    Ok(fd) => {
-                        let mut fd = fd;
-                        match writeln!(fd, "{}", toml::Value::Table(root).to_string()) {
-                            Ok(_) => None,
-                            Err(e) => Some(Error::Io(e)),
-                        }
-                    }
-                    Err(er) => Some(Error::Io(er)),
-                }
+    fn write<'x>(&self, file: &'x str) -> Result<bool> {
+        info!("write config into file {}", file);
+        let mut fd = try!(OpenOptions::new().create(true).write(true).append(true).open(file));
+        try!(writeln!(fd, "{}", toml::Value::Table(self.root.clone()).to_string()));
+        Ok(true)
+    }
+
+    fn get<T: Decodable>(&self, name: &'static str) -> Result<T> {
+        match self.root.get(name) {
+            Some(val) => {
+                let val = val.clone();
+                let mut dec = toml::Decoder::new(val);
+                let cfg = try!(T::decode(&mut dec));
+                Ok(cfg)
             }
-            Err(e) => Some(Error::Toml(e)),
+            None => Err(Error::Io(io::Error::new(io::ErrorKind::InvalidData, ""))),
         }
+    }
+
+    fn put<'x, T: Encodable>(&mut self, name: &'x str, t: T) -> Result<bool> {
+        let mut enc = toml::Encoder::new();
+        try!(t.encode(&mut enc));
+        self.root.insert(name.to_string(), toml::Value::Table(enc.toml));
+        Ok(true)
     }
 }
