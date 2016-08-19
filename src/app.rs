@@ -3,22 +3,29 @@ extern crate mustache;
 
 use std::{path, env};
 use std::fs::OpenOptions;
+use std::collections::HashMap;
+use std::cell::RefCell;
 
 use super::config;
 use super::console;
 use super::config::Loader;
+use super::web::engine::Engine;
 
-pub struct Application {
-
+pub struct Application<'a> {
+    engines: RefCell<Vec<&'a Engine>>,
 }
 
-impl Application {
-    pub fn new() -> Application {
-        Application {}
+impl<'a> Application<'a> {
+    pub fn new() -> Application<'a> {
+        Application { engines: RefCell::new(Vec::new()) }
     }
 }
 
-impl Application {
+impl<'a> Application<'a> {
+    pub fn register(&self, en: &'a Engine) {
+        self.engines.borrow_mut().push(en);
+    }
+
     pub fn start(&self, args: console::Args) {
         debug!("{:?}", args);
         if args.flag_version {
@@ -31,33 +38,33 @@ impl Application {
         }
         if args.cmd_db {
             if args.cmd_console {
-                // TODO
+                self.db_console(&args.flag_config);
                 return;
             }
             if args.cmd_create {
-                // TODO
+                self.db_create(&args.flag_config);
                 return;
             }
             if args.cmd_migrate {
-                // TODO
+                self.db_migrate(&args.flag_config);
                 return;
             }
             if args.cmd_rollback {
-                // TODO
+                self.db_rollback(&args.flag_config);
                 return;
             }
             if args.cmd_drop {
-                // TODO
+                self.db_drop(&args.flag_config);
                 return;
             }
         }
         if args.cmd_cache {
             if args.cmd_console {
-                // TODO
+                self.cache_console(&args.flag_config);
                 return;
             }
             if args.cmd_clear {
-                // TODO
+                self.cache_clear(&args.flag_config);
                 return;
             }
         }
@@ -66,23 +73,26 @@ impl Application {
             return;
         }
         if args.cmd_worker {
-            // TODO
+            self.worker(&args.flag_config, args.flag_threads, args.flag_daemon);
             return;
         }
         if args.cmd_server {
-            // TODO
+            self.server(&args.flag_config,
+                        args.flag_port,
+                        args.flag_threads,
+                        args.flag_daemon);
             return;
         }
         println!("{}", console::usage());
     }
 }
 
-impl Application {
+impl<'a> Application<'a> {
     fn version(&self) -> String {
         format!("v{}", env!("CARGO_PKG_VERSION"))
     }
 
-    fn init<'a>(&self, file: &'a str) {
+    fn init<'x>(&self, file: &'x str) {
         if path::Path::new(file).exists() {
             error!("file {} already exists.", file);
             return;
@@ -123,11 +133,35 @@ impl Application {
         info!("done.");
     }
 
-    fn db_migrate<'a>(&self, _: &'a str) {
+    fn db_console<'x>(&self, _: &'x str) {
+        // TODO
+    }
+    fn db_create<'x>(&self, _: &'x str) {
+        // TODO
+    }
+    fn db_migrate<'x>(&self, _: &'x str) {
+        // TODO
+    }
+    fn db_rollback<'x>(&self, _: &'x str) {
+        // TODO
+    }
+    fn db_drop<'x>(&self, _: &'x str) {
+        // TODO
+    }
+    fn cache_clear<'x>(&self, _: &'x str) {
+        // TODO
+    }
+    fn cache_console<'x>(&self, _: &'x str) {
+        // TODO
+    }
+    fn server<'x>(&self, _: &'x str, _: usize, _: usize, _: bool) {
+        // TODO
+    }
+    fn worker<'x>(&self, _: &'x str, _: usize, _: bool) {
         // TODO
     }
 
-    fn nginx<'a>(&self, domain: &'a str, port: usize, ssl: bool) {
+    fn nginx<'x>(&self, domain: &'x str, port: usize, ssl: bool) {
         let name = "nginx.conf";
         if path::Path::new(name).exists() {
             error!("file {} already exists.", name);

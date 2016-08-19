@@ -1,8 +1,11 @@
 extern crate postgres as pgsql;
 extern crate toml;
 extern crate hyper;
+extern crate redis;
+extern crate rustc_serialize;
 
 use std::{io, num, result, fmt, error};
+use rustc_serialize::json;
 
 pub type Result<T> = result::Result<T, Error>;
 
@@ -16,6 +19,9 @@ pub enum Error {
     PgConn(pgsql::error::ConnectError),
     Pg(pgsql::error::Error),
     Hyper(hyper::Error),
+    Redis(redis::RedisError),
+    JsonDecoder(json::DecoderError),
+    JsonEncoder(json::EncoderError),
 }
 
 impl fmt::Display for Error {
@@ -29,6 +35,9 @@ impl fmt::Display for Error {
             Error::PgConn(ref err) => err.fmt(f),
             Error::Pg(ref err) => err.fmt(f),
             Error::Hyper(ref err) => err.fmt(f),
+            Error::Redis(ref err) => err.fmt(f),
+            Error::JsonDecoder(ref err) => err.fmt(f),
+            Error::JsonEncoder(ref err) => err.fmt(f),
         }
     }
 }
@@ -44,6 +53,9 @@ impl error::Error for Error {
             Error::PgConn(ref err) => err.description(),
             Error::Pg(ref err) => err.description(),
             Error::Hyper(ref err) => err.description(),
+            Error::Redis(ref err) => err.description(),
+            Error::JsonDecoder(ref err) => err.description(),
+            Error::JsonEncoder(ref err) => err.description(),
         }
     }
 
@@ -57,6 +69,9 @@ impl error::Error for Error {
             Error::PgConn(ref err) => Some(err),
             Error::Pg(ref err) => Some(err),
             Error::Hyper(ref err) => Some(err),
+            Error::Redis(ref err) => Some(err),
+            Error::JsonDecoder(ref err) => Some(err),
+            Error::JsonEncoder(ref err) => Some(err),
         }
     }
 }
@@ -103,5 +118,24 @@ impl From<toml::Error> for Error {
 impl From<hyper::Error> for Error {
     fn from(err: hyper::Error) -> Error {
         Error::Hyper(err)
+    }
+}
+
+
+impl From<redis::RedisError> for Error {
+    fn from(err: redis::RedisError) -> Error {
+        Error::Redis(err)
+    }
+}
+
+impl From<json::DecoderError> for Error {
+    fn from(err: json::DecoderError) -> Error {
+        Error::JsonDecoder(err)
+    }
+}
+
+impl From<json::EncoderError> for Error {
+    fn from(err: json::EncoderError) -> Error {
+        Error::JsonEncoder(err)
     }
 }

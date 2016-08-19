@@ -18,8 +18,8 @@ pub struct Cache {
     pub driver: String,
     pub prefix: String,
     pub host: String,
-    pub port: i32,
-    pub db: i32,
+    pub port: usize,
+    pub db: u8,
 }
 
 #[derive(Debug, Clone)]
