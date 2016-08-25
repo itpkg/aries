@@ -1,10 +1,8 @@
 
 extern crate mustache;
 
-use rustc_serialize::{Decodable, Encodable};
-use std::{path, env, any, io, process};
+use std::{path, env, process};
 use std::fs::OpenOptions;
-use std::collections::HashMap;
 use std::cell::RefCell;
 
 use super::config::{self, Loader};

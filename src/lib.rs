@@ -6,6 +6,7 @@ pub mod cache;
 pub mod crypto;
 pub mod i18n;
 pub mod orm;
+pub mod pool;
 pub mod web;
 pub mod app;
 pub mod console;

@@ -1,9 +1,7 @@
 extern crate toml;
 
-use std::fs;
-use std::fs::OpenOptions;
-use std::io;
-use std::io::{Read, Write};
+use std::fs::{self, OpenOptions};
+use std::io::{self, Read, Write};
 use rustc_serialize::{Decodable, Encodable};
 
 use super::super::error::{Result, Error};

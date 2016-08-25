@@ -28,5 +28,5 @@ impl Server {
         }
     }
 
-    fn handle(&self, req: Request, res: Response) {}
+    pub fn handle(&self, _: Request, _: Response) {}
 }
