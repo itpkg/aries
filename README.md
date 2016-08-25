@@ -18,10 +18,14 @@ cargo test -- --nocapture
 ```
 cargo install rustfmt
 cargo install racer
-echo "export PATH=\$HOME/.cargo/bin:\$PATH" >> ~/.zshrc
+echo "RUST_SRC_PATH=\$HOME/src/rust\nPATH=\$HOME/.cargo/bin:\$PATH\nexport RUST_SRC_PATH PATH" >> ~/.zshrc
 ```
 
 remember to enable autosave
+
+```
+git clone https://github.com/rust-lang/rust.git $RUST_SRC_PATH
+```
 
 * atom-beautify(beautify on save)
 * git-plus
