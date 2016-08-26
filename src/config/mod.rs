@@ -20,6 +20,7 @@ pub struct Cache {
     pub host: String,
     pub port: u32,
     pub db: u8,
+    pub pool: usize,
 }
 
 #[derive(Debug, Clone)]
@@ -31,6 +32,7 @@ pub struct Database {
     pub name: String,
     pub user: String,
     pub password: String,
+    pub pool: usize,
     pub extra: String,
 }
 

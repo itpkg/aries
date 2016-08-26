@@ -4,7 +4,7 @@ use aries::cache::{self, Cache};
 
 #[test]
 fn test_cache_redis() {
-    let ch = &cache::redis::Cache::new("cache://", "localhost", 6379, 2).unwrap();
+    let mut ch = cache::redis::Cache::new("cache://", "localhost", 6379, 2, 12).unwrap();
 
 
     let key = "hi";

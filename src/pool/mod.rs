@@ -20,18 +20,18 @@ pub struct Pool<C: Connection, D: Driver<C>> {
 }
 
 impl<C: Connection, D: Driver<C>> Pool<C, D> {
-    pub fn new(len: usize, driver: D) -> Pool<C, D> {
+    pub fn new(driver: D, len: usize) -> Result<Pool<C, D>> {
         let mut items = Vec::new();
         for _ in 0..len {
             match driver.open() {
                 Ok(t) => items.push(t),
-                Err(e) => error!("{}", e),
+                Err(e) => return Err(e),
             }
         }
-        Pool {
+        Ok(Pool {
             items: items,
             driver: driver,
-        }
+        })
     }
 }
 

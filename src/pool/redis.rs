@@ -30,7 +30,7 @@ pub struct Driver {
 }
 
 impl Driver {
-    pub fn new(url: &'static str) -> Result<Driver> {
+    pub fn new<'x>(url: &'x str) -> Result<Driver> {
         let cli = try!(redis::Client::open(try!(url.into_connection_info())));
         Ok(Driver { client: cli })
     }

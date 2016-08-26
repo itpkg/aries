@@ -1,23 +1,27 @@
 extern crate redis;
 
-use self::redis::Commands;
-use super::super::error::Result;
-use self::redis::{IntoConnectionInfo, RedisResult};
 use rustc_serialize::{Decodable, Encodable};
 use rustc_serialize::json::{self, DecodeResult};
 
+use self::redis::{RedisResult, Commands};
+use super::super::error::Result;
+use super::super::pool;
+
+
 
 pub struct Cache<'a> {
-    client: redis::Client,
+    pool: pool::Pool<pool::redis::Connection, pool::redis::Driver>,
     prefix: &'a str,
 }
 
 impl<'a> Cache<'a> {
-    pub fn new(prefix: &'a str, host: &'a str, port: u32, db: u8) -> Result<Cache<'a>> {
+    pub fn new(prefix: &'a str, host: &'a str, port: u32, db: u8, len: usize) -> Result<Cache<'a>> {
         let url = &format!("redis://{}:{}/{}", host, port, db);
-        let cli = try!(redis::Client::open(try!(url.into_connection_info())));
+        let drv = try!(pool::redis::Driver::new(url));
+        let pl = try!(pool::Pool::new(drv, len));
+
         Ok(Cache {
-            client: cli,
+            pool: pl,
             prefix: prefix,
         })
     }
@@ -28,39 +32,44 @@ impl<'a> Cache<'a> {
 }
 
 impl<'a> super::Cache for Cache<'a> {
-    fn get<T: Decodable>(&self, key: &'static str) -> Result<T> {
-        let con = try!(self.client.get_connection());
-        let rst: RedisResult<String> = con.get(self.key(key));
+    fn get<T: Decodable>(&mut self, key: &'static str) -> Result<T> {
+        let con = try!(self.pool.get());
+        let rst: RedisResult<String> = con.item.get(self.key(key));
+        self.pool.put(con);
         let buf = try!(rst);
         let val: DecodeResult<T> = json::decode(&buf);
         let val = try!(val);
         Ok(val)
     }
-    fn set<T: Encodable>(&self, key: &'static str, val: T, ttl: usize) -> Result<String> {
+    fn set<T: Encodable>(&mut self, key: &'static str, val: T, ttl: usize) -> Result<String> {
         let buf = try!(json::encode(&val));
-        let con = try!(self.client.get_connection());
-        let rst: RedisResult<String> = con.set_ex(self.key(key), buf, ttl);
+        let con = try!(self.pool.get());
+        let rst: RedisResult<String> = con.item.set_ex(self.key(key), buf, ttl);
+        self.pool.put(con);
         let rst = try!(rst);
         Ok(rst)
     }
-    fn delete(&self, key: &'static str) -> Result<String> {
-        let con = try!(self.client.get_connection());
-        let rst: RedisResult<String> = con.del(self.key(key));
+    fn delete(&mut self, key: &'static str) -> Result<String> {
+        let con = try!(self.pool.get());
+        let rst: RedisResult<String> = con.item.del(self.key(key));
+        self.pool.put(con);
         let rst = try!(rst);
         Ok(rst)
     }
-    fn clear(&self) -> Result<String> {
-        let con = try!(self.client.get_connection());
+    fn clear(&mut self) -> Result<String> {
+        let con = try!(self.pool.get());
         let keys = try!(self.keys());
         if !keys.is_empty() {
-            let rst: RedisResult<usize> = con.del(keys);
+            let rst: RedisResult<usize> = con.item.del(keys);
             try!(rst);
         }
+        self.pool.put(con);
         Ok("ok".to_string())
     }
-    fn keys(&self) -> Result<Vec<String>> {
-        let con = try!(self.client.get_connection());
-        let rst: RedisResult<Vec<String>> = con.keys(self.key("*"));
+    fn keys(&mut self) -> Result<Vec<String>> {
+        let con = try!(self.pool.get());
+        let rst: RedisResult<Vec<String>> = con.item.keys(self.key("*"));
+        self.pool.put(con);
         let rst = try!(rst);
         Ok(rst)
     }

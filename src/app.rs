@@ -99,6 +99,7 @@ impl<'a, CL: Loader> Application<'a, CL> {
             name: "aries_dev".to_string(),
             user: "postgres".to_string(),
             password: "".to_string(),
+            pool: 64,
             extra: "sslmod=none".to_string(),
         };
         let httpd = config::Httpd {
@@ -112,6 +113,7 @@ impl<'a, CL: Loader> Application<'a, CL> {
             host: "localhost".to_string(),
             port: 6379,
             db: 0,
+            pool: 32,
         };
 
         try!(self.loader.set("httpd", httpd));
@@ -149,7 +151,8 @@ impl<'a, CL: Loader> Application<'a, CL> {
         let ch: config::Cache = try!(self.loader.get("cache"));
         info!("connect to cache server");
         if ch.driver == "redis" {
-            let c = try!(cache::redis::Cache::new(&ch.prefix, &ch.host, ch.port, ch.db));
+            let mut c =
+                try!(cache::redis::Cache::new(&ch.prefix, &ch.host, ch.port, ch.db, ch.pool));
             try!(c.clear());
             Ok(true)
         } else {

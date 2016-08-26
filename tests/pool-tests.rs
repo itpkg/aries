@@ -8,7 +8,7 @@ use self::redis::{Commands, RedisResult};
 #[test]
 fn test_pool_redis() {
     let d = pool::redis::Driver::new("redis://localhost:6379/2").unwrap();
-    let mut p = pool::Pool::new(12, d);
+    let mut p = pool::Pool::new(d, 12).unwrap();
     for i in 0..500 {
         let c = p.get().unwrap();
         let key = format!("test://hi/{}", i);
@@ -26,7 +26,7 @@ fn test_pool_postgresql() {
     let d = pool::postgresql::Driver::new("postgres://postgres@localhost:5432/aries_test",
                                           pg::SslMode::None)
         .unwrap();
-    let mut p = pool::Pool::new(12, d);
+    let mut p = pool::Pool::new(d, 12).unwrap();
     for _ in 0..20 {
         let c = p.get().unwrap();
         c.item
