@@ -1,16 +1,15 @@
+extern crate hyper;
 
-// pub trait Render {
-//     fn json() {}
-//     fn xml() {}
-//     fn bytes() {}
-//     fn file() {}
-//     fn html();
-// }
-//
-// pub struct Mustache {
-//
-// }
-//
-// impl Render for Mustache {
-//     fn html() {}
-// }
+use rustc_serialize::Encodable;
+
+pub struct Render<T: Encodable> {
+    body: T,
+}
+
+impl<T: Encodable> Render<T> {
+    pub fn json() {}
+    pub fn xml() {}
+    pub fn bytes() {}
+    pub fn file() {}
+    pub fn html() {}
+}
