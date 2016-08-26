@@ -23,24 +23,24 @@ impl super::Connection for Connection {
 }
 
 pub struct Driver<'a> {
-    url: &'a str,
-    mode: pg::SslMode<'a>,
+    url: &'a str, // mode: pg::SslMode<'a>,
 }
 
 impl<'a> Driver<'a> {
-    pub fn new(url: &'a str, mode: pg::SslMode<'a>) -> Result<Driver<'a>> {
+    pub fn new(url: &'a str, _: pg::SslMode<'static>) -> Result<Driver<'a>> {
         Ok(Driver {
             url: url,
-            mode: mode,
+        //    mode: mode,
         })
     }
 }
 
 impl<'a> super::Driver<Connection> for Driver<'a> {
     fn open(&self) -> Result<Connection> {
-        // let mode = Box::new(self.mode);
         // FIXME
         let con = try!(pg::Connection::connect(self.url, pg::SslMode::None));
+        // // let mode = Box::new(self.mode);
+        // let con = try!(pg::Connection::connect(self.url, self.mode));
         Ok(Connection { item: con })
     }
 }

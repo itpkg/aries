@@ -1,10 +1,10 @@
 extern crate redis;
 
 use self::redis::Commands;
-use super::super::error::{Result, Error};
-use self::redis::{IntoConnectionInfo, RedisResult, Connection, ToRedisArgs};
+use super::super::error::Result;
+use self::redis::{IntoConnectionInfo, RedisResult};
 use rustc_serialize::{Decodable, Encodable};
-use rustc_serialize::json::{self, ToJson, EncoderError, DecodeResult};
+use rustc_serialize::json::{self, DecodeResult};
 
 
 pub struct Cache<'a> {
