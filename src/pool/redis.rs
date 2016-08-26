@@ -8,8 +8,6 @@ pub struct Connection {
     pub item: redis::Connection,
 }
 
-
-
 impl super::Connection for Connection {
     fn check(&self) -> bool {
         let rst: RedisResult<String> = redis::cmd("PING").query(&self.item);
@@ -32,8 +30,7 @@ pub struct Driver {
 }
 
 impl Driver {
-    pub fn new(host: &'static str, port: u32, db: u8) -> Result<Driver> {
-        let url = &format!("redis://{}:{}/{}", host, port, db);
+    pub fn new(url: &'static str) -> Result<Driver> {
         let cli = try!(redis::Client::open(try!(url.into_connection_info())));
         Ok(Driver { client: cli })
     }
