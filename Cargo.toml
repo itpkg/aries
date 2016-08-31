@@ -14,6 +14,10 @@ include = [
     "Cargo.toml",
 ]
 
+# [[bin]]
+# name = "ariesd"
+# doc = false
+
 [dependencies]
 rand = "0.3"
 uuid = {version = "0.2", features = ["v4"]}
